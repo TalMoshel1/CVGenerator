@@ -1,6 +1,7 @@
 package com.example.cv.controller;
 
 import com.example.cv.model.PdfContent;
+import com.example.cv.model.UserDetailsRequest;
 import com.example.cv.service.ExtractPDFService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,9 +56,10 @@ public class CVController {
      * @return ResponseEntity with the status of PDF generation.
      */
     @PostMapping("/submit-details")
-    public ResponseEntity<String> submitDetails(@RequestBody Map<String, String> userDetails, HttpSession session) {
+    public ResponseEntity<String> submitDetails(@RequestBody UserDetailsRequest request, HttpSession session) {
         try {
-            String filename = userDetails.get("filename");
+            String filename = request.getFilename();
+            Map<String, String> userDetails = request.getUserDetails();
 
             if (filename == null || filename.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -72,7 +74,7 @@ public class CVController {
             }
 
             // Call the inject function from ExtractPDFService with filename and userDetails
-            String outputFilePath = extractPDFService.injectAnswersToPdf(filename, userDetails);
+            String outputFilePath = extractPDFService.createPdfWithUserData(filename, userDetails, session);
 
             if (outputFilePath == null) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
