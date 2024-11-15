@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>{{id.name.first}} {{id.name.last}}</title>
+   <style>
+        body {
+             font-family: 'Arial', sans-serif;
+             background-color: #f9f9f9;
+             color: #333;
+             margin: 0;
+             padding: 0;
+           }
+
+           h1 {
+             font-size: 2.8em;
+             color: #2c3e50;
+             text-align: center;
+             margin-top: 30px;
+           }
+
+           h2 {
+             font-size: 2em;
+             color: #2c3e50;
+             margin-bottom: 10px;
+             border-bottom: 2px solid #2c3e50;
+             padding-bottom: 5px;
+           }
+
+           h3 {
+             font-size: 1.5em;
+             color: #2c3e50;
+           }
+
+           p, li {
+             font-size: 1.2em;
+             line-height: 1.6;
+           }
+
+           .content {
+             width: 80%;
+             margin: 20px auto;
+           }
+
+           .section {
+             margin-bottom: 30px;
+           }
+
+           .section ul {
+             list-style-type: none;
+             padding-left: 0;
+           }
+
+           .section li {
+             margin-bottom: 10px;
+           }
+
+           .job {
+             margin-bottom: 15px;
+           }
+
+           .job ul li {
+             margin-left: 20px;
+           }
+
+           .skills ul {
+             display: flex;
+             gap: 20px;
+           }
+
+           .skills ul li {
+             background-color: #2c3e50;
+             color: white;
+             padding: 5px 10px;
+             border-radius: 5px;
+           }
+   </style>
+</head>
+<body>
+  <div class="content">
+    <h1>My CV</h1>
+
+    <!-- SUMMARY -->
+    <section class="section">
+      <h2>SUMMARY</h2>
+      <p>Full stack developer with 15 years of experience in building scalable applications. {{id.name.first}} {{id.name.last}}</p>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE -->
+    <section class="section experience">
+      <h2>PROFESSIONAL EXPERIENCE</h2>
+      <div class="job">
+        <h3>Front End &amp; Back End Developer — Kaka, Maccabi (June 2024 – August 2024)</h3>
+        <ul>
+          <li>Made hamburgers.</li>
+          <li>Key technologies: JavaScript, React, Node.js</li>
+          <li>www.lalalala.com, www.jokingaroundwithai.com, www.github.com</li>
+        </ul>
+      </div>
+      <div class="job">
+        <h3>Front End Developer — Expense Tracker App (2023 – Present)</h3>
+        <ul>
+          <li>Built a front end app using HTML, CSS, JavaScript, React, Redux</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section education">
+      <h2>EDUCATION</h2>
+      <div>
+        <h3>B.Sc. Computer Science, Hogwarts (2020)</h3>
+        <ul>
+          <li>Best idiot in the college.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section skills">
+      <h2>SKILLS</h2>
+      <ul>
+        <li>JavaScript</li>
+        <li>Java</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

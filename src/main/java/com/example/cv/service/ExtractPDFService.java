@@ -9,6 +9,8 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
+import org.apache.pdfbox.text.PDFTextStripperByArea;
+import org.apache.pdfbox.text.TextPosition;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,46 +92,51 @@ public class ExtractPDFService {
     }
 
     // Create a new PDF with modified content
+
     public String createPdfWithUserData(String filename, Map<String, String> userDetails, HttpSession session) throws IOException {
-        // Step 1: Extract the PDF content
-        PdfContent pdfContent = extractTextFromPdf(filename, session);
+        // Step 1: Extract the original PDF content (text, position, fonts)
+        PDDocument originalDocument = PDDocument.load(new File("src/main/resources/CVTemplates/" + filename + ".pdf"));
+        PDFTextStripper textStripper = new PDFTextStripper();
 
-        System.out.println("pdf content: " + pdfContent);
+        // Extract text and maintain layout
+        textStripper.setSortByPosition(true);
+        String originalText = textStripper.getText(originalDocument);
 
-        // Step 2: Replace placeholders in the extracted text with user data
-        String modifiedText = replacePlaceholdersWithUserData(pdfContent.getPdfText(), userDetails);
+        // Step 2: Replace placeholders with user data in the original text
+        String modifiedText = replacePlaceholdersWithUserData(originalText, userDetails);
 
-        // Step 3: Create a new PDF with the modified text
+        // Step 3: Create a new PDF with the modified content
         PDDocument newDocument = new PDDocument();
-        PDPage page = new PDPage();
+        PDPage page = originalDocument.getPage(0); // Copy the original page structure
         newDocument.addPage(page);
+
         PDPageContentStream contentStream = new PDPageContentStream(newDocument, page);
 
         // Load the LiberationSans-Regular font
         PDType0Font font = PDType0Font.load(newDocument, new File("src/main/resources/fonts/LiberationSans-Regular.ttf"));
 
-        // Adding the modified text to the PDF
+        // Begin the text content stream
         contentStream.beginText();
-        contentStream.setFont(font, 12); // Set to use LiberationSans-Regular
-        contentStream.newLineAtOffset(100, 750); // Set text position
-        contentStream.showText(modifiedText); // Write the modified text to the PDF
+        contentStream.setFont(font, 12); // Set font to match original design
+        contentStream.newLineAtOffset(100, 750); // Set the initial position (keep original position)
+
+        // Write the modified text to the PDF (preserving layout and design)
+        contentStream.showText(modifiedText); // This might not preserve the line breaks and positions, so additional layout logic may be required
+
         contentStream.endText();
         contentStream.close();
 
-        // Step 4: Generate a unique file name using UUID
+        // Step 4: Generate a unique file name
         String uniqueFileName = UUID.randomUUID().toString() + ".pdf";
-
-        // Save the new PDF to the CVTemplates folder inside the resources directory
         String savePath = Paths.get("src", "main", "resources", "CVTemplates", uniqueFileName).toString();
 
-        // Step 5: Save the document to the generated path
+        // Step 5: Save the new PDF
         newDocument.save(savePath);
         newDocument.close();
+        originalDocument.close();
 
-        // Return the file path or any other confirmation
         return "PDF saved at: " + savePath;
-    }
-    // Example method to detect placeholders from filename (just a placeholder for your actual logic)
+    }    // Example method to detect placeholders from filename (just a placeholder for your actual logic)
     private Set<String> detectPlaceholders(String filename) {
         Set<String> placeholders = new HashSet<>();
 

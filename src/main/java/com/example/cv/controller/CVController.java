@@ -3,10 +3,22 @@ package com.example.cv.controller;
 import com.example.cv.model.PdfContent;
 import com.example.cv.model.UserDetailsRequest;
 import com.example.cv.service.ExtractPDFService;
+import com.example.cv.service.PdfService;
+import com.example.cv.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
+
+import java.nio.file.Paths;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.nio.file.Paths;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -48,13 +60,41 @@ public class CVController {
         }
     }
 
-    /**
-     * Accepts user details and injects them into the PDF.
-     *
-     * @param userDetails A map of user details for placeholders.
-     * @param session     HTTP session with potential placeholders set during extraction.
-     * @return ResponseEntity with the status of PDF generation.
-     */
+    @RestController
+    @RequestMapping("/file")
+    public class FileController {
+
+        private final TemplateService templateService;
+        private final PdfService pdfService;
+
+        @Autowired
+        public FileController(TemplateService templateService, PdfService pdfService) {
+            this.templateService = templateService;
+            this.pdfService = pdfService;
+        }
+
+        @PostMapping("/generate")
+        public String generateCvPdf(
+                @RequestBody Map<String, Object> requestData,
+                @RequestParam(name = "filename", defaultValue = "generatedCV") String filename) {
+            try {
+                // Compile Handlebars Template using cv.hbt
+                String templateName = "cv";  // This is the file name without the extension
+                String htmlContent = templateService.compileTemplate(templateName, requestData);
+
+                // Set output filename with .pdf extension
+                String outputPath = Paths.get("src/main/resources/templates/" + filename + ".pdf").toAbsolutePath().toString();
+
+                // Generate PDF
+                pdfService.generatePdf(htmlContent, outputPath);
+
+                return "PDF Generated Successfully! Saved at: " + outputPath;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error generating PDF: " + e.getMessage();
+            }
+        }
+    }
     @PostMapping("/submit-details")
     public ResponseEntity<String> submitDetails(@RequestBody UserDetailsRequest request, HttpSession session) {
         try {
@@ -106,6 +146,52 @@ public class CVController {
         return ResponseEntity.ok(placeholders);
     }
 
+
+
+
+
+    @RestController
+    @RequestMapping("/api/file")
+    public class PdfController {
+
+        private final TemplateService templateService;
+        private final PdfService pdfService;
+
+        @Autowired
+        public PdfController(TemplateService templateService, PdfService pdfService) {
+            this.templateService = templateService;
+            this.pdfService = pdfService;
+        }
+
+        /**
+         * Endpoint to generate a PDF from a specified Handlebars template.
+         *
+         * @param requestData  JSON data to inject into the template
+         * @param templateName Name of the Handlebars template (without .hbs extension)
+         * @return Success or error message
+         */
+        @PostMapping("/generate")
+        public String generateFile(
+                @RequestBody Map<String, Object> requestData,
+                @RequestParam(name = "template") String templateName) {
+            try {
+                // Compile Handlebars Template with Data
+                String htmlContent = templateService.compileTemplate(templateName, requestData);
+
+                // Define the output PDF file path
+                String outputFileName = templateName + ".pdf";
+                String outputPath = Paths.get("src/main/resources/templates/" + outputFileName).toAbsolutePath().toString();
+
+                // Generate PDF
+                pdfService.generatePdf(htmlContent, outputPath);
+
+                return "PDF Generated Successfully! Saved at: " + outputPath;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error generating PDF: " + e.getMessage();
+            }
+        }
+    }
     /**
      * Basic endpoint for testing connectivity.
      */
