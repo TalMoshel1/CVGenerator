@@ -16,12 +16,13 @@ public class PdfService {
      * @throws Exception if PDF generation fails
      */
     public void generatePdf(String htmlContent, String outputPath) throws Exception {
-        try (OutputStream os = new FileOutputStream(outputPath)) {
-            PdfRendererBuilder builder = new PdfRendererBuilder();
-            builder.useFastMode();
-            builder.withHtmlContent(htmlContent, null);
-            builder.toStream(os);
-            builder.run();
-        }
+//        System.out.println("html: "+ htmlContent);
+//        try (OutputStream os = new FileOutputStream(outputPath)) {
+//            PdfRendererBuilder builder = new PdfRendererBuilder();
+//            builder.useFastMode();
+//            builder.withHtmlContent(htmlContent, null);
+//            builder.toStream(os);
+//            builder.run();
+//        }
     }
 }
