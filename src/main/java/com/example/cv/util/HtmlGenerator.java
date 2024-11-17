@@ -1,4 +1,5 @@
 package com.example.cv.util;
+import com.example.cv.model.PersonalDetails;
 
 import com.example.cv.model.Job;
 import com.example.cv.model.Education;
@@ -7,6 +8,45 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public class HtmlGenerator {
+
+    public String generatePersonalInfoSection(PersonalDetails personalDetails) {
+        StringBuilder personalInfoSection = new StringBuilder();
+
+        if (personalDetails != null) {
+            personalInfoSection.append("<section class=\"section personal-details\">");
+            personalInfoSection.append("<h2>").append(personalDetails.getName()).append("</h2>");
+            personalInfoSection.append("<ul>");
+
+            // Append phone number if present
+            if (personalDetails.getPhone() != null && !personalDetails.getPhone().isEmpty()) {
+                personalInfoSection.append("<li>CELL: ").append(personalDetails.getPhone()).append("</li>");
+            }
+
+            // Append email address if present
+            if (personalDetails.getEmail() != null && !personalDetails.getEmail().isEmpty()) {
+                personalInfoSection.append("<li>EMAIL: ").append(personalDetails.getEmail()).append("</li>");
+            }
+
+            // Append LinkedIn profile if present
+            if (personalDetails.getLinkedIn() != null && !personalDetails.getLinkedIn().isEmpty()) {
+                personalInfoSection.append("<li>LINKEDIN: <a href=\"").append(personalDetails.getLinkedIn()).append("\">").append(personalDetails.getLinkedIn()).append("</a></li>");
+            }
+
+            // Append GitHub profile if present
+            if (personalDetails.getGitHub() != null && !personalDetails.getGitHub().isEmpty()) {
+                personalInfoSection.append("<li>GITHUB: <a href=\"https://github.com/").append(personalDetails.getGitHub()).append("\">").append(personalDetails.getGitHub()).append("</a></li>");
+            }
+
+            // Append summary
+
+            personalInfoSection.append("</ul>");
+            personalInfoSection.append("<p>SUMMARY: ").append(personalDetails.getSummary()).append("</p>");
+
+            personalInfoSection.append("</section>");
+        }
+
+        return personalInfoSection.toString();
+    }
 
     /**
      * Generates the HTML for the work (job) section.

@@ -1,5 +1,5 @@
 package com.example.cv.controller;
-
+import com.example.cv.model.PersonalDetails;
 import com.example.cv.model.Job;
 import com.example.cv.model.Education;
 import com.example.cv.service.TemplateService;
@@ -43,7 +43,9 @@ public class CVController {
             @RequestParam(name = "filename", defaultValue = "generatedCV") String filename) {
         try {
             Gson gson = new Gson();
+            String personalDetailsJson = gson.toJson(requestData.get("personalDetails"));
 
+            PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
             // Deserialize jobs
             String jobsJson = gson.toJson(requestData.get("jobs"));
             List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {}.getType());
@@ -51,22 +53,21 @@ public class CVController {
             // Deserialize educations
             String educationsJson = gson.toJson(requestData.get("educations"));
 
-            System.out.println("educationsJson: "+educationsJson);
             List<Education> educations = gson.fromJson(educationsJson, new TypeToken<List<Education>>() {}.getType());
 
-            System.out.println("educations " + educations);
-
-            // Generate HTML sections for work and education
+            // Generate HTML sections for work and education and privateDetails
+            String privateDetailsSection = htmlGenerator.generatePersonalInfoSection(personalDetails);
             String workSection = htmlGenerator.generateWorkSection(jobs);
             String educationSection = htmlGenerator.generateEducationSection(educations);
 
             // Add generated HTML sections and other data to the map
             requestData.put("workSection", workSection);
             requestData.put("educationSection", educationSection);
+            requestData.put("personalDetailsSection", personalDetails);
 
             // Compile the HTML template with data
             String templateName = "cv"; // Template file name without extension
-            String htmlContent = templateService.compileTemplateWithSections(templateName, requestData, jobs, educations);
+            String htmlContent = templateService.compileTemplateWithSections(templateName, requestData, jobs, educations, personalDetails);
 
             // Set output filename with .pdf extension
             String outputPath = Paths.get("src/main/resources/templates/" + filename + ".pdf").toAbsolutePath().toString();

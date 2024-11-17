@@ -17,12 +17,13 @@ public class PdfService {
      */
     public void generatePdf(String htmlContent, String outputPath) throws Exception {
 //        System.out.println("html: "+ htmlContent);
-//        try (OutputStream os = new FileOutputStream(outputPath)) {
-//            PdfRendererBuilder builder = new PdfRendererBuilder();
-//            builder.useFastMode();
-//            builder.withHtmlContent(htmlContent, null);
-//            builder.toStream(os);
-//            builder.run();
-//        }
+        System.out.println(outputPath);
+        try (OutputStream os = new FileOutputStream(outputPath)) {
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.useFastMode(); //trying false
+            builder.withHtmlContent(htmlContent, null);
+            builder.toStream(os);
+            builder.run();
+        }
     }
 }

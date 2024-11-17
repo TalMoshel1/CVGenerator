@@ -1,5 +1,6 @@
 package com.example.cv.service;
 
+import com.example.cv.model.PersonalDetails;
 import com.example.cv.util.HtmlGenerator;
 import com.example.cv.model.Job;
 import com.example.cv.model.Education;
@@ -41,10 +42,11 @@ public class TemplateService {
     /**
      * Compiles a Handlebars template with the given data and dynamically generated HTML sections.
      */
-    public String compileTemplateWithSections(String templateName, Map<String, Object> data, List<Job> jobs, List<Education> educations) throws Exception {
+    public String compileTemplateWithSections(String templateName, Map<String, Object> data, List<Job> jobs, List<Education> educations, PersonalDetails personalDetails) throws Exception {
 
         data.put("workSection", jobs);
         data.put("educationSection", educations);
+        data.put("personalDetailsSection", personalDetails);
 
         return compileTemplate(templateName, data);
     }
