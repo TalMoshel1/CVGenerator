@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Document Title Here</title>
+         <style>
+           * {
+       font-family: Arial, sans-serif;
+     }
+
+            a {
+            color: black;
+            }
+
+           .personal-details ul li {
+                  width: 49%;
+                  text-align:center;
+                }
+
+                .personal-details ul li:nth-child(1) {
+                  font-weight: bold;
+
+                }
+
+               .personal-details ul li:nth-child(2) {
+                      font-weight: bold;
+                }
+
+                .first-line h2 {
+                font-size: 1rem; }
+
+                .project .first-line span , .tech-wraper {
+                text-decoration: underline;
+                font-weight: bold;
+                     }
+
+                     .first-line {
+                     margin-top: 1.245rem;
+                     }
+
+
+
+
+
+                  .personal-details ul {
+                             display: -webkit-box;
+                             flex-wrap: wrap;
+                             width: 100%;
+                             v-webkit-box-pack: justify;      }
+
+                             h2 {
+                             font-size: 1.5rem;
+                             }
+
+                             .skills ul {
+                             list-style-type: none;
+                                 padding: 0;
+                                 }
+
+                             h3 {
+                             font-size: 1rem;
+                             }
+
+                             .personal-details h2 {
+                             font-size: 3rem;
+                             }
+
+                             .projects .first-line h2 {
+                                         text-decoration: underline;
+                                       }
+
+                             .projects h2 {
+                             display: inline;
+
+                             }
+                             .urls {
+                             display: inline;
+                             }
+
+     .section {
+     width: 80%;
+     margin-left: auto;
+     margin-right: auto;
+     }
+
+      .experience ul {
+      list-style-type: none;
+      padding: 0;
+      }
+
+      .educations ul {
+      list-style-type: none;
+      padding-left: 0em;
+      }
+
+     .unserline {
+     text-decoration: underline;
+     }
+
+     .section:not(:last-of-type) {
+          border-bottom: 3px solid black;
+}
+
+     .experience ul li::after,
+       .educations ul li::after {
+         content: ".";
+       }
+
+       .skills {
+
+           margin-bottom: 1.245rem;
+
+           }
+
+
+
+           .personal-details {
+             justify-items:center;
+           }
+
+           .personal-details h2{
+            margin:0;
+           }
+
+           .summary {
+           border-bottom: 3px solid black;
+
+           }
+
+           .personal-details ul {
+             display: -webkit-box;
+             width: 100%;
+             v-webkit-box-pack: justify;
+             list-style-type: none;}
+
+             }
+
+         .content {
+           justify-items:center;
+         }
+
+
+         .one-line-army {
+         display: -webkit-box;
+         width: fit-content;
+         margin-top: 1rem;
+         }
+
+         .one-line-army span{
+         height: 100%;
+         text-align:center;
+         font-size: 1.5rem;
+         font-weight: bold;
+         }
+
+         .one-line-army h2{
+         font-size: 1.5rem;
+         margin-top: 0;
+         margin-right: 0.5rem;
+         }
+
+       </style>
+</head>
+<body>
+  <div class="content">
+    <section class="section personal-details">
+      {{#if personalDetails}}
+        <h2>{{personalDetails.name}}</h2> <ul>
+          {{#if personalDetails.phone}}
+            <li class="bold-li"><span>{{personalDetails.phone}}</li>
+          {{/if}}
+          {{#if personalDetails.email}}
+            <li class="bold-li"> {{personalDetails.email}}</li>
+          {{/if}}
+          {{#if personalDetails.linkedIn}}
+            </br><li><a style="black-link" href="{{personalDetails.linkedIn}}">LINKEDIN</a></li>
+          {{/if}}
+          {{#if personalDetails.gitHub}}
+            <li><a style="black-link" href="https://github.com/{{personalDetails.gitHub}}">GITHUB</a></li>
+          {{/if}}
+        </ul>
+
+      {{/if}}
+    </section>
+        <main>
+        {{#if personalDetails.summary}}
+        <section class="section summary">
+            <h2>SUMMARY</h2>
+            <p>{{personalDetails.summary}}</p>
+        </section>
+        {{/if}}
+
+ <section class="section experience">
+   <h2>PROFESSIONAL EXPERIENCE</h2>
+   {{#each workSection}}
+     <h3><span style="underline">{{title}}</span> - {{company}} <span>({{period}})</span></h3>
+<ul>
+  {{#each responsibilities}}
+    {{#if this}}
+      <li>{{this}}</li>
+    {{/if}}
+  {{/each}}
+</ul>
+   {{/each}}
+ </section>
+
+<section class="section educations">
+    <h2>EDUCATION</h2>
+    {{#each educationSection}}
+        {{{this}}}
+    {{/each}}
+
+</section>
+
+
+    <section class="section skills">
+    {{{skillsSection}}}
+
+    </section>
+
+    <section class="section projects">
+        <h2>PROJECTS</h2>
+    {{{projectsSection}}}
+    </section>
+
+      {{{armySection}}}
+
+
+    </main>
+
+
+    </div>
+</body>
+</html>

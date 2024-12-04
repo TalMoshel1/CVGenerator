@@ -1,19 +1,41 @@
 package com.example.cv.controller;
-import com.example.cv.model.PersonalDetails;
-import com.example.cv.model.Job;
-import com.example.cv.model.Education;
+import com.example.cv.helpers.JsonToStringMapConverter;
+import com.example.cv.model.*;
+import com.example.cv.service.InteractionToJson;
 import com.example.cv.service.TemplateService;
 import com.example.cv.service.PdfService;
 import com.example.cv.util.HtmlGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Year;
+import java.util.*;
+
+import com.google.gson.Gson;
+
+import com.google.gson.reflect.TypeToken;
+
 import java.util.List;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 @RestController
 @RequestMapping("/api/file")
@@ -30,57 +52,247 @@ public class CVController {
         this.htmlGenerator = htmlGenerator;
     }
 
-    /**
-     * Endpoint for generating a CV PDF using the provided job and education data.
-     *
-     * @param requestData The data to generate the CV, including Job and Education details.
-     * @param filename   The name of the generated PDF file.
-     * @return Response indicating the result of PDF generation.
-     */
+    static class CvGenerationData {
+        public String  myGoal;
+        public String myHighlights;
+
+        public String myExperience;
+
+        public String myEducations;
+
+        public String myTemplate;
+
+    }
+    @Autowired
+    private InteractionToJson interactionToJsonService;
+
+    @Value("home.folder")
+    String homeFolder;
+
     @PostMapping("/generate")
-    public String generateCvPdf(
-            @RequestBody Map<String, Object> requestData,
-            @RequestParam(name = "filename", defaultValue = "generatedCV") String filename) {
+    public ResponseEntity<?>generateCvPdf(
+            @RequestBody CvGenerationData userInput
+    ) {
+        JsonObject mockdata = new JsonObject();
+        mockdata.addProperty("goal", userInput.myGoal);
+        mockdata.addProperty("highlight", userInput.myHighlights);
+        mockdata.addProperty("jobs", userInput.myExperience);
+        mockdata.addProperty("educations", userInput.myEducations);
+        mockdata.addProperty("template", userInput.myTemplate);
+
+
         try {
             Gson gson = new Gson();
-            String personalDetailsJson = gson.toJson(requestData.get("personalDetails"));
+            Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata); // used to convert the data recieved JSON to map but Not neccessary probably
+//            String openAIResponse = InteractionToJson.processUserJson(mockedDataMap); the real response from the api
+            String mockedDataOpenAi = "{\n" +
+                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
+                    "  \"object\": \"chat.completion\",\n" +
+                    "  \"created\": 1732618207,\n" +
+                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
+                    "  \"choices\": [\n" +
+                    "    {\n" +
+                    "      \"index\": 0,\n" +
+                    "      \"message\": {\n" +
+                    "        \"role\": \"assistant\",\n" +
+                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal Moshel\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"www.blibli.com\\\",\\n    \\\"gitHub\\\": \\\"www.blabla.com\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\"\\n}\\n```\",\n" +
+                    "        \"refusal\": null\n" +
+                    "      },\n" +
+                    "      \"logprobs\": null,\n" +
+                    "      \"finish_reason\": \"stop\"\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"usage\": {\n" +
+                    "    \"prompt_tokens\": 511,\n" +
+                    "    \"completion_tokens\": 168,\n" +
+                    "    \"total_tokens\": 679,\n" +
+                    "    \"prompt_tokens_details\": {\n" +
+                    "      \"cached_tokens\": 0,\n" +
+                    "      \"audio_tokens\": 0\n" +
+                    "    },\n" +
+                    "    \"completion_tokens_details\": {\n" +
+                    "      \"reasoning_tokens\": 0,\n" +
+                    "      \"audio_tokens\": 0,\n" +
+                    "      \"accepted_prediction_tokens\": 0,\n" +
+                    "      \"rejected_prediction_tokens\": 0\n" +
+                    "    }\n" +
+                    "  },\n" +
+                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
+                    "}\n";
 
-            PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
-            // Deserialize jobs
-            String jobsJson = gson.toJson(requestData.get("jobs"));
-            List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {}.getType());
+            String mockedDataOpenAi2 = "{\n" +
+                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
+                    "  \"object\": \"chat.completion\",\n" +
+                    "  \"created\": 1732618207,\n" +
+                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
+                    "  \"choices\": [\n" +
+                    "    {\n" +
+                    "      \"index\": 0,\n" +
+                    "      \"message\": {\n" +
+                    "        \"role\": \"assistant\",\n" +
+                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal MoshelHa\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"Express\\\", \\\"2FA\\\", \\\"nodemailer\\\", \\\"MongoDB\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n  ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
+                    "        \"refusal\": null\n" +
+                    "      },\n" +
+                    "      \"logprobs\": null,\n" +
+                    "      \"finish_reason\": \"stop\"\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"usage\": {\n" +
+                    "    \"prompt_tokens\": 511,\n" +
+                    "    \"completion_tokens\": 168,\n" +
+                    "    \"total_tokens\": 679,\n" +
+                    "    \"prompt_tokens_details\": {\n" +
+                    "      \"cached_tokens\": 0,\n" +
+                    "      \"audio_tokens\": 0\n" +
+                    "    },\n" +
+                    "    \"completion_tokens_details\": {\n" +
+                    "      \"reasoning_tokens\": 0,\n" +
+                    "      \"audio_tokens\": 0,\n" +
+                    "      \"accepted_prediction_tokens\": 0,\n" +
+                    "      \"rejected_prediction_tokens\": 0\n" +
+                    "    }\n" +
+                    "  },\n" +
+                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
+                    "}\n";
 
-            // Deserialize educations
-            String educationsJson = gson.toJson(requestData.get("educations"));
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> responseMap = objectMapper.readValue(mockedDataOpenAi2, Map.class);
 
-            List<Education> educations = gson.fromJson(educationsJson, new TypeToken<List<Education>>() {}.getType());
+            if (responseMap.containsKey("choices") && !((List) responseMap.get("choices")).isEmpty()) {
+                Map<String, Object> firstChoice = (Map<String, Object>) ((List) responseMap.get("choices")).get(0);
+                Map<String, Object> message = (Map<String, Object>) firstChoice.get("message");
+                String aiResultContent = (String) message.get("content");
 
-            // Generate HTML sections for work and education and privateDetails
-            String privateDetailsSection = htmlGenerator.generatePersonalInfoSection(personalDetails);
-            String workSection = htmlGenerator.generateWorkSection(jobs);
-            String educationSection = htmlGenerator.generateEducationSection(educations);
+                // Remove the ```json and ending ```
+                if (aiResultContent != null) {
+                    aiResultContent = aiResultContent.replaceFirst("^```json\\n", "").replaceFirst("\\n```$", "");
+                }
 
-            // Add generated HTML sections and other data to the map
-            requestData.put("workSection", workSection);
-            requestData.put("educationSection", educationSection);
-            requestData.put("personalDetailsSection", personalDetails);
 
-            // Compile the HTML template with data
-            String templateName = "cv"; // Template file name without extension
-            String htmlContent = templateService.compileTemplateWithSections(templateName, requestData, jobs, educations, personalDetails);
+                Map<String, Object> requestData = gson.fromJson(aiResultContent, new TypeToken<Map<String, Object>>() {
+                }.getType());
 
-            // Set output filename with .pdf extension
-            String outputPath = Paths.get("src/main/resources/templates/" + filename + ".pdf").toAbsolutePath().toString();
 
-            // Generate the PDF
-            pdfService.generatePdf(htmlContent, outputPath);
 
-            return "PDF Generated Successfully! Saved at: " + outputPath;
+                String personalDetailsJson = gson.toJson(requestData.get("personalDetails"));
+
+
+
+                JSONObject jsonObject = new JSONObject(personalDetailsJson);
+                String nameProp = jsonObject.getString("name");
+                String newFileName = generateFileName(nameProp);
+
+                PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
+
+                // Deserialize jobs
+                String jobsJson = gson.toJson(requestData.get("jobs"));
+                List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {
+                }.getType());
+
+                // Deserialize educations
+                String educationsJson = gson.toJson(requestData.get("educations"));
+
+                // Deserialize Skills
+
+                String SkillsJson = gson.toJson(requestData.get("Skills"));
+
+                String projectsJson = gson.toJson(requestData.get("projects"));
+
+                String armyJson = gson.toJson(requestData.get("army"));
+
+                Army armyDetails = gson.fromJson(armyJson, Army.class);
+
+
+                List<Education> educations = gson.fromJson(educationsJson, new TypeToken<List<Education>>() {
+                }.getType());
+
+                List<Project> projects = gson.fromJson(projectsJson, new TypeToken<List<Project>>() {
+                }.getType());
+
+
+
+                List<String> skills = gson.fromJson(SkillsJson, new TypeToken<List<String>>() {
+                }.getType());
+                // Generate HTML sections for work and education and privateDetails
+                String armySection = htmlGenerator.generateArmySection(armyDetails);
+                String privateDetailsSection = htmlGenerator.generatePersonalInfoSection(personalDetails);
+                String workSection = htmlGenerator.generateWorkSection(jobs);
+                String educationSection = htmlGenerator.generateEducationSection(educations);
+                String skillsSection = htmlGenerator.generateSkillsSection(skills);
+                String projectsSection = htmlGenerator.generateProjectSection(projects);
+
+                // Add generated HTML sections and other data to the map
+                requestData.put("workSection", workSection);
+                requestData.put("educationSection", educationSection);
+                requestData.put("personalDetailsSection", personalDetails);
+                requestData.put("skillsSection", skillsSection);
+                requestData.put("projectsSection", projectsSection);
+                requestData.put("armySection", armySection);
+
+                System.out.println("request Data: "+ requestData);
+
+
+                String templateName = "cv"; // Template file name without extension
+                String htmlContent = templateService.compileTemplateWithSections("1", requestData, jobs, educations, personalDetails, skillsSection, projectsSection, armySection);
+
+                String outputPath = Paths.get(homeFolder + newFileName + ".html").toAbsolutePath().toString();
+                Files.write(Paths.get(outputPath), htmlContent.getBytes());
+
+                File pdfFile = pdfService.generatePdf(newFileName);
+
+
+                Resource resource = new ClassPathResource("templates/" + newFileName + ".pdf");
+
+                if (!resource.exists()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                }
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_PDF)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + newFileName + ".pdf\"")
+                        .body(resource);
+
+            }
+
+
+        } catch (JsonMappingException e) {
+            throw new RuntimeException(e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Error generating PDF: " + e.getMessage();
+            throw new RuntimeException(e);
         }
+        return ResponseEntity.ok("CV Couldn't be generated");
     }
+
+        public static String getThisCurrentYear() {
+        Calendar cal = Calendar.getInstance();
+        return String.valueOf(cal.get(Calendar.YEAR)); // Get current year
+    }
+
+    public static String generateFileName(String namesString) {
+        String[] names = namesString.split(" ");
+        StringBuilder fileName = new StringBuilder();
+
+        for (String name : names) {
+            fileName.append(name).append("_");
+        }
+
+        fileName.deleteCharAt(fileName.length() - 1);
+
+        fileName.append("_Resume_").append(Year.now().getValue());
+        return fileName.toString();
+    }
+
+
+
+
+
+
 }
 
 

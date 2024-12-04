@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CV Form</title>
+    <style>
+        /* Your CSS styles here */
+        #submitButton {
+            background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 1.5rem;
+    }
+        body {
+    font-family: Arial, sans-serif;
+    background-color: lightblue;
+}
+
+form {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+
+form label:first-of-type{
+margin-bottom: 0.67rem;
+
+}
+
+form label:not(:first-of-type) {
+margin-bottom: 0.67rem;
+margin-top: 0.67rem;
+
+}
+
+        textarea {
+        width: 100%;
+        border-radius: 10px;
+        }
+
+        textarea:hover{
+            border: 1.111px solid blue;
+        }
+
+        h1 {
+        text-align: center;
+        }
+        form {
+        width: 75vw;
+        margin-right: auto;
+        margin-left: auto;
+        }
+
+        div {
+            margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    margin-bottom: 0.67rem;;
+    }
+
+        label {
+        display: block;
+        }
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<h1>CV Form</h1>
+<form id="cvForm">
+    <div>
+        <label for="goal">What goal you target with this CV?</label>
+        <textarea id="goal" name="goal" rows="4" cols="50" required></textarea>
+    </div>
+    <div>
+        <label for="highlight">What would you like to highlight?</label>
+        <textarea id="highlight" name="highlight" rows="4" cols="50" required></textarea>
+    </div>
+    <div>
+        <label for="jobs">Where did you work at?</label>
+        <textarea id="jobs" name="jobs" rows="4" cols="50" required></textarea>
+    </div>
+    <div>
+        <label for="studies">Where did you study?</label>
+        <textarea id="studies" name="studies" rows="4" cols="50" required></textarea>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+        <label for="template">Select a template:</label>
+        <div id="customDropdown" class="dropdown" style="text-align: center;">
+            <label style="display: inline-block; margin: 10px; text-align: center;">
+                <input type="radio" name="template" value="1" required />
+                <img src="/images/1.png" alt="Template 1" style="max-width: 35vw; height: 50vh;  display: block;" />
+            </label>
+            <label style="display: inline-block; margin: 10px; text-align: center;">
+                <input type="radio" name="template" value="2" required />
+                <img src="/images/2.png" alt="Template 2" style="max-width: 35vw; height: 50vh; display: block;" />
+            </label>
+        </div>
+    </div>
+
+
+    <button type="submit" id="submitButton" disabled>Submit</button>
+</form>
+
+<script>
+    const form = document.getElementById('cvForm');
+    const submitButton = document.getElementById('submitButton');
+
+    // Enable/disable submit button based on form validity
+    form.addEventListener('input', () => {
+        const allFieldsFilled = form.querySelectorAll('input, textarea, select').length === form.querySelectorAll('input:valid, textarea:valid, select:valid').length;
+        submitButton.disabled = !allFieldsFilled;
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+
+        const formData = new FormData(form);
+        const data = {
+            myGoal: formData.get('goal'),
+            myHighlights: formData.get('highlight'),
+            myExperience: formData.get('jobs'),
+            myEducations: formData.get('studies'),
+            myTemplate: formData.get('template')
+        };
+
+        try {
+            const response = await fetch('/api/file/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+        const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated-cv.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+<!--                alert('CV successfully generated!');-->
+            } else {
+                alert('Failed to generate CV');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error occurred while generating the CV');
+        }
+    });
+</script>
+</body>
+</html>

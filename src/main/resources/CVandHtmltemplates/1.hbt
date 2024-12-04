@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Document Title Here</title>
+         <style>
+           * {
+       font-family: Arial, sans-serif;
+     }
+
+     a {
+     color: #3D85C6;
+     }
+
+      .projects .first-line h2 {
+                                         text-decoration: underline;
+                                         margin-left: 0;
+                                         margin-top: 0;
+                                         margin-bottom:0;
+                                         font-size: 16px;
+                                         margin-right: 0.5rem;
+                                       }
+
+                             .first-line {
+                                     display: -webkit-box;
+                                     width: 100%;
+                                     v-webkit-box-pack: justify;
+                                     font-size: 16px;
+
+                             }
+                             .urls {
+                             display: inline;
+                             }
+
+
+                                             .project .first-line span , .tech-wraper {
+                                             text-decoration: underline;
+                                             font-weight: bold;
+                                                  }
+
+                                                  .tech-wraper a {
+                                                  margin-right: 0.5rem;
+                                                  }
+
+                                                  .summary p {
+                                                  text-align: center;
+                                                  }
+
+                                                  .first-line {
+                                                  margin-top: 1.245rem;
+                                                  }
+       .experience ul li::after,
+       .educations ul li::after {
+         content: ".";
+       }
+
+
+
+
+
+           .personal-details ul li {
+             margin-right: 1.75rem;
+           }
+
+
+           .border-dots {
+             width: 100%;
+             height:1px;
+             border-top: 2.5px dotted #9D9D9D;
+           }
+           .personal-details {
+             justify-items:center;
+           }
+           .personal-details ul {
+             display: -webkit-box;
+             width: 100%;
+             v-webkit-box-pack: justify;      }
+           .personal-details span {
+             color: #6C6C6C;
+             font-weight: 600;
+           }
+           .personal-details li {
+             color: #999999;
+             margin-right: 10px;
+           }
+           .personal-details li::marker {
+             color: #6FA8DC;
+           }
+           .personal-details h2 {
+             color: #3D85C6;
+             font-size: 40px;
+           }
+
+          .summary h2, .experience h2, .educations h2, .skills h2, .PROJECTS {
+            color: #3D85C6;
+            align-content: center;
+            text-align: center;
+
+
+           }
+
+           .experience ul, .educations ul, .skills ul, .project ul{
+                 padding-left: 1rem;
+
+
+     }
+
+
+
+           .section-experience h2 {
+             color: #3D85C6;
+             font-size: 40px;
+           }
+         .content {
+           justify-items:center;
+         }
+         .experience .section h2 {
+           color: blue;
+         }
+
+         .one-line-army {
+         display: -webkit-box;
+         width: fit-content;
+         margin-left: auto;
+         margin-right: auto;
+
+
+         }
+
+         .one-line-army span{
+         height: 100%;
+         text-align:center;
+         font-size: 1.5rem;
+         color:#3D85C6;
+         font-weight: bold;
+         }
+
+         .one-line-army h2{
+         font-size: 1.5rem;
+         margin-top: 0;
+         margin-right: 0.5rem;
+         color: #3D85C6;
+         }
+
+         h3 {
+         font-size: 16px;
+         }
+       </style>
+</head>
+<body>
+  <div class="content">
+    <section class="section personal-details">
+      {{#if personalDetails}}
+        <h2>{{personalDetails.name}}</h2> <ul>
+          {{#if personalDetails.phone}}
+            <li><span>CELL</span> {{personalDetails.phone}}</li>
+          {{/if}}
+          {{#if personalDetails.email}}
+            <li><span>EMAIL</span> {{personalDetails.email}}</li>
+          {{/if}}
+          {{#if personalDetails.linkedIn}}
+            <li><span>LINKEDIN</span> <a href="{{personalDetails.linkedIn}}">{{personalDetails.name}}</a></li>
+          {{/if}}
+          {{#if personalDetails.gitHub}}
+            <li><span>GITHUB</span> <a href="https://github.com/{{personalDetails.gitHub}}">{{personalDetails.name}}</a></li>
+          {{/if}}
+        </ul>
+
+      {{/if}}
+    </section>
+        <main>
+        {{#if personalDetails.summary}}
+        <section class="section summary">
+            <h2>SUMMARY</h2>
+            <p>{{personalDetails.summary}}</p>
+        </section>
+        {{/if}}
+
+ <section class="section experience">
+   <h2>PROFESSIONAL EXPERIENCE</h2>
+   {{#each workSection}}
+     <h3>{{title}} - {{company}} <span>({{period}})</span></h3>
+     <ul>
+       {{#each responsibilities}}
+         <li>{{this}}</li>
+       {{/each}}
+     </ul>
+   {{/each}}
+ </section>
+
+<section class="section educations">
+    <h2>EDUCATION</h2>
+    {{#each educationSection}}
+        {{{this}}}
+    {{/each}}
+
+</section>
+
+    <section class="section skills">
+    {{{skillsSection}}}
+
+    </section>
+
+        <section class="section projects">
+            <h2 class="PROJECTS">PROJECTS</h2>
+        {{{projectsSection}}}
+        </section>
+
+           {{{armySection}}}
+
+    </main>
+
+
+    </div>
+</body>
+</html>
