@@ -1,4 +1,6 @@
 package com.example.cv.service;
+import org.springframework.beans.factory.annotation.Value;
+
 
 import com.example.cv.openAI.ChatGPTRequest;
 import com.example.cv.openAI.ChatGptResponse;
@@ -34,6 +36,9 @@ public class InteractionToJson {
     private static final String OPENAI_URL = "https://api.openai.com/v1/chat/completions";
     private static final String OPENAI_KEY = System.getenv("OPENAI_KEY");
 
+//    @Value("${api.key}")
+//    private static String apiKey;
+
 
 
 
@@ -45,12 +50,11 @@ public class InteractionToJson {
 
             String apiKey = System.getenv("OPENAI_KEY");
 
-
             String prompt = "You are a CV writer expert. Please take the information you got from the user: " +
                     userInputJson +
                     ", and then translate it to the structure of this JSON object. Note: do not add information in case that the UserData missing information that will be relevant to the next JSON properties, and return the result of this long JSON structure with the new information: {\n" +
                     "  \"personalDetails\": {\n" +
-                    "    \"name\": \"John Doe\",\n" +
+                    "    \"name\": \"\",\n" +
                     "    \"email\": \"johndoe@example.com\",\n" +
                     "    \"phone\": \"123-456-7890\",\n" +
                     "    \"linkedIn\": \"https://www.linkedin.com/in/johndoe\",\n" +
@@ -118,7 +122,6 @@ public class InteractionToJson {
                     "  }\n" +
                     "}.";
 
-
             // Create the OpenAI request
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -143,18 +146,8 @@ public class InteractionToJson {
                     String.class
             );
 
-            // Print the OpenAI response - it worked but returned the whole object in the response
-
-//            return response.getBody();
-
-            ObjectMapper responseMapper = new ObjectMapper();
-            JsonNode responseBody = responseMapper.readTree(response.getBody());
-
-            // Extract the content from the response
-            JsonNode contentNode = responseBody.path("choices").get(0).path("message").path("content");
-
-            // Return the content (JSON) as formatted string
-            return contentNode.asText();
+            // Return the full OpenAI response body as-is
+            return response.getBody();
 
         } catch (Exception e) {
             e.printStackTrace();

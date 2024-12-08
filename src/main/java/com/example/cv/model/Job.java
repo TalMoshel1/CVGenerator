@@ -53,13 +53,39 @@ public class Job {
 
     @Override
     public String toString() {
-        return "<h3>" + (getTitle() != null ? getTitle() : "No Title") + "</h3>" +
-                "<p>" + (getCompany() != null ? getCompany() : "No Company") + " - (" +
-                (getPeriod() != null && !getPeriod().isEmpty() ? getPeriod() : "No Period") + ")</p>" +
-                "<ul>" +
-                responsibilities.stream()
-                        .map(responsibility -> "<li>" + responsibility + "</li>")
-                        .collect(Collectors.joining()) +
-                "</ul>";
+        StringBuilder sb = new StringBuilder();
+
+        // If the title, company, and responsibilities are all invalid, return an empty string
+        if ((getTitle() == null || getTitle().isEmpty()) &&
+                (getCompany() == null || getCompany().isEmpty()) &&
+                (responsibilities == null || responsibilities.isEmpty())) {
+            return "";  // Return empty string if no valid data
+        }
+
+        // Only generate title if it's valid
+        if (getTitle() != null && !getTitle().isEmpty()) {
+            sb.append("<h3>").append(getTitle()).append(" - ").append(getCompany());
+
+            // Generate period if valid
+            if (getPeriod() != null && !getPeriod().isEmpty()) {
+                sb.append(" <span>(").append(getPeriod()).append(")</span>");
+            }
+            sb.append("</h3>");
+        }
+
+        // Generate responsibilities if valid
+        if (responsibilities != null && !responsibilities.isEmpty()) {
+            sb.append("<ul>");
+            responsibilities.forEach(responsibility -> {
+                if (responsibility != null && !responsibility.isEmpty()) {
+                    sb.append("<li>").append(responsibility).append("</li>");
+                }
+            });
+            sb.append("</ul>");
+        }
+        System.out.println("sb.toString: " + sb.toString());
+        return sb.toString();
     }
+
+
 }

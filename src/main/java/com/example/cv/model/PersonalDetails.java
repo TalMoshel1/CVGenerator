@@ -58,7 +58,7 @@ public class PersonalDetails {
 
     public void setPhone(String phone) {
         this.phone
- = phone;
+                = phone;
     }
 
     public void setLinkedIn(String linkedIn) {
@@ -70,7 +70,7 @@ public class PersonalDetails {
     }
 
     public void setSummary(String
-            summary) {
+                                   summary) {
         this.summary = summary;
     }
     @Override

@@ -98,6 +98,7 @@ public class HtmlGenerator {
     /**
      * Generates the HTML for the education section.
      */
+
     public String generateEducationSection(List<Education> educations) {
         StringBuilder educationSection = new StringBuilder();
 
@@ -135,16 +136,25 @@ public class HtmlGenerator {
 
         return educationSection.toString();
     }
-
     public String generateSkillsSection(List<?> skills) {
+
         StringBuilder skillsSection = new StringBuilder();
 
-        if (skills != null && !skills.isEmpty()) {
+        System.out.println("skills: " + skills);
+
+        // Check if the list is not empty and contains at least one non-empty skill
+        boolean hasValidSkills = skills != null && skills.stream()
+                .anyMatch(skill -> skill instanceof String && !((String) skill).isEmpty());
+
+        if (hasValidSkills) {
             skillsSection.append("<h2>SKILLS</h2>");
             skillsSection.append("<p>");
             for (Object skill : skills) {
                 if (skill instanceof String) {
-                    skillsSection.append(skill).append(". ");
+                    String skillString = (String) skill;
+                    if (!skillString.isEmpty()) {
+                        skillsSection.append(skillString).append(". ");
+                    }
                 } else {
                     // Handle other data types as needed, e.g., extract string values
                     String skillString = String.valueOf(skill); // Or use specific conversion logic
@@ -161,13 +171,19 @@ public class HtmlGenerator {
     public String generateProjectSection(List<Project> projects) {
         StringBuilder projectSection = new StringBuilder();
 
-        for (Project project : projects) {
+        System.out.println("projects input: "+projects.toString());
 
+        // Check if the projects list is not empty
+        if (projects != null && projects.size() > 0 && !projects.isEmpty() && projects.get(0) != null && projects.get(0).getProject() != null && !projects.get(0).getProject().isBlank()) {
+            projectSection.append("<h2 class='PROJECTS'>PROJECTS</h2>");  // Add the "PROJECTS" header
+        }
+
+        for (Project project : projects) {
             projectSection.append("<div class='project'>");
 
-            if (project.getProject() != null) {
+            if (project.getProject() != null && !project.getProject().isEmpty()) {
                 projectSection.append("<div class='first-line'>")
-                .append("<h2>").append(project.getProject()).append(" ").append("</h2>");
+                        .append("<h2>").append(project.getProject()).append(" ").append("</h2>");
 
                 if (project.getTechnologies() != null && !project.getTechnologies().isEmpty()) {
                     projectSection.append(" - ").append("<span class='tech-wraper'>");
@@ -176,13 +192,11 @@ public class HtmlGenerator {
                     }
                     projectSection.append("</span>");
                 }
-
             }
+
             Project.Urls urls = project.getUrls();
             if (urls != null) {
-
                 if (urls.getGithubRepository() != null && !urls.getGithubRepository().isEmpty()) {
-
                     // Iterate through each GitHub repository
                     for (String repo : urls.getGithubRepository()) {
                         String absoluteRepoUrl = repo.startsWith("http://") || repo.startsWith("https://") ? repo : "http://" + repo;
@@ -192,33 +206,33 @@ public class HtmlGenerator {
                     }
                 }
 
-// Check if the live URL is not null or empty
-                    if (urls.getLive() != null && !urls.getLive().isEmpty()) {
-                        String absoluteLiveUrl = urls.getLive().startsWith("http://") || urls.getLive().startsWith("https://")
-                                ? urls.getLive()
-                                : "http://" + urls.getLive();
+                // Check if the live URL is not null or empty
+                if (urls.getLive() != null && !urls.getLive().isEmpty()) {
+                    String absoluteLiveUrl = urls.getLive().startsWith("http://") || urls.getLive().startsWith("https://")
+                            ? urls.getLive()
+                            : "http://" + urls.getLive();
 
-                        projectSection.append("<a href='").append(absoluteLiveUrl).append("' target='_blank'>Live Project</a>");
-                    }
+                    projectSection.append("<a href='").append(absoluteLiveUrl).append("' target='_blank'>Live Project</a>");
+                }
 
-
-                    projectSection.append("</div>");
-
+                projectSection.append("</div>");
             }
 
-            if (project.getBody() != null) {
+            if (project.getBody() != null && !project.getBody().isEmpty()) {
                 projectSection.append("<p>").append(project.getBody()).append("</p>");
             }
 
             projectSection.append("</div>");
         }
 
+        System.out.println("projectSection: " + projectSection);
+
         return projectSection.toString();
     }
 
     public String generateArmySection(Army armyDetails) {
         StringBuilder armySection = new StringBuilder();
-        if (armyDetails.getBody() != null || armyDetails.getPeriod() != null) {
+        if (!armyDetails.getBody().isEmpty() || !armyDetails.getPeriod().isEmpty()) {
 
             armySection.append("<section class='section army'>").append("<div class='one-line-army'>").append("<h2>").append("MILITARY SERVICE").append("</h2>");
             if (armyDetails.getPeriod() != null && !armyDetails.getPeriod().isEmpty()) {
@@ -234,7 +248,8 @@ public class HtmlGenerator {
 
         return armySection.toString();
 
-        }
-
     }
+
+
+}
 

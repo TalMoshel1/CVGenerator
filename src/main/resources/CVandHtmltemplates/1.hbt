@@ -150,32 +150,32 @@
 </head>
 <body>
   <div class="content">
-    <section class="section personal-details">
-      {{#if personalDetails}}
-        <h2>{{personalDetails.name}}</h2> <ul>
-          {{#if personalDetails.phone}}
-            <li><span>CELL</span> {{personalDetails.phone}}</li>
-          {{/if}}
-          {{#if personalDetails.email}}
-            <li><span>EMAIL</span> {{personalDetails.email}}</li>
-          {{/if}}
-          {{#if personalDetails.linkedIn}}
-            <li><span>LINKEDIN</span> <a href="{{personalDetails.linkedIn}}">{{personalDetails.name}}</a></li>
-          {{/if}}
-          {{#if personalDetails.gitHub}}
-            <li><span>GITHUB</span> <a href="https://github.com/{{personalDetails.gitHub}}">{{personalDetails.name}}</a></li>
-          {{/if}}
-        </ul>
+       <section class="section personal-details">
+          {{#if personalDetails}}
+            <h2>{{personalDetails.name}}</h2> <ul>
+              {{#if personalDetails.phone}}
+                <li><span>CELL</span> {{personalDetails.phone}}</li>
+              {{/if}}
+              {{#if personalDetails.email}}
+                <li><span>EMAIL</span> {{personalDetails.email}}</li>
+              {{/if}}
+              {{#if personalDetails.linkedIn}}
+                <li><span>LINKEDIN</span> <a href="{{personalDetails.linkedIn}}">{{personalDetails.name}}</a></li>
+              {{/if}}
+              {{#if personalDetails.gitHub}}
+                <li><span>GITHUB</span> <a href="https://github.com/{{personalDetails.gitHub}}">{{personalDetails.name}}</a></li>
+              {{/if}}
+            </ul>
 
-      {{/if}}
-    </section>
-        <main>
-        {{#if personalDetails.summary}}
-        <section class="section summary">
-            <h2>SUMMARY</h2>
-            <p>{{personalDetails.summary}}</p>
+          {{/if}}
         </section>
-        {{/if}}
+            <main>
+            {{#if personalDetails.summary}}
+            <section class="section summary">
+                <h2>SUMMARY</h2>
+                <p>{{personalDetails.summary}}</p>
+            </section>
+            {{/if}}
 
  <section class="section experience">
    <h2>PROFESSIONAL EXPERIENCE</h2>
@@ -190,11 +190,11 @@
  </section>
 
 <section class="section educations">
-    <h2>EDUCATION</h2>
-    {{#each educationSection}}
-        {{{this}}}
-    {{/each}}
-
+    {{#if educationSection.length}}
+      {{#each educationSection}}
+          {{{this}}}
+      {{/each}}
+    {{/if}}
 </section>
 
     <section class="section skills">
@@ -203,9 +203,9 @@
     </section>
 
         <section class="section projects">
-            <h2 class="PROJECTS">PROJECTS</h2>
         {{{projectsSection}}}
         </section>
+
 
            {{{armySection}}}
 

@@ -74,4 +74,66 @@ public class Project {
             this.live = live;
         }
     }
+
+    @Override
+    public String toString() {
+        if (project == null || project.isEmpty()) {
+            System.out.println("project: "+ project);
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+
+        // Add PROJECTS header
+//        sb.append("<h2 class='PROJECTS'>PROJECTS</h2>");
+
+        // Start project section
+        sb.append("<div class='project'>");
+
+        // Add project title and technologies
+        if (!project.isEmpty()) {
+            sb.append("<div class='first-line'>")
+                    .append("<h2>").append(project).append("</h2>");
+
+            if (technologies != null && !technologies.isEmpty()) {
+                sb.append(" - ").append("<span class='tech-wraper'>");
+                for (String tech : technologies) {
+                    sb.append("<span>").append(tech).append("</span> ");
+                }
+                sb.append("</span>");
+            }
+
+            sb.append("</div>");
+        }
+
+        // Add URLs
+        if (urls != null) {
+            if (urls.getGithubRepository() != null && !urls.getGithubRepository().isEmpty()) {
+                for (String repo : urls.getGithubRepository()) {
+                    String absoluteRepoUrl = repo.startsWith("http://") || repo.startsWith("https://") ? repo : "http://" + repo;
+                    sb.append("<a href='").append(absoluteRepoUrl).append("' target='_blank'>")
+                            .append(repo).append("</a>")
+                            .append("<span class='blank'> </span>");
+                }
+            }
+            if (urls.getLive() != null && !urls.getLive().isEmpty()) {
+                String absoluteLiveUrl = urls.getLive().startsWith("http://") || urls.getLive().startsWith("https://")
+                        ? urls.getLive()
+                        : "http://" + urls.getLive();
+                sb.append("<a href='").append(absoluteLiveUrl).append("' target='_blank'>Live Project</a>");
+            }
+        }
+
+        // Add project description
+        if (body != null && !body.isEmpty()) {
+            sb.append("<p>").append(body).append("</p>");
+        }
+
+        // Close project section
+        sb.append("</div>");
+
+        System.out.println("sb: "+ sb);
+
+        return sb.toString();
+    }
+
 }

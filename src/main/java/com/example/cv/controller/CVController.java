@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Year;
@@ -66,7 +67,7 @@ public class CVController {
     @Autowired
     private InteractionToJson interactionToJsonService;
 
-    @Value("home.folder")
+    @Value("${home.folder}")
     String homeFolder;
 
     @PostMapping("/generate")
@@ -84,7 +85,7 @@ public class CVController {
         try {
             Gson gson = new Gson();
             Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata); // used to convert the data recieved JSON to map but Not neccessary probably
-//            String openAIResponse = InteractionToJson.processUserJson(mockedDataMap); the real response from the api
+//            String mockedDataOpenAi2 = InteractionToJson.processUserJson(mockedDataMap);
             String mockedDataOpenAi = "{\n" +
                     "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
                     "  \"object\": \"chat.completion\",\n" +
@@ -234,23 +235,32 @@ public class CVController {
 
                 String templateName = "cv"; // Template file name without extension
                 String htmlContent = templateService.compileTemplateWithSections("1", requestData, jobs, educations, personalDetails, skillsSection, projectsSection, armySection);
+                System.out.println("*****111111111111*    after compile"  );
+                File htmlFile = new File(homeFolder + newFileName + ".html");
+                String outputPath = htmlFile.getAbsolutePath();
+                System.out.println("*****222222* html is:" + outputPath  );
 
-                String outputPath = Paths.get(homeFolder + newFileName + ".html").toAbsolutePath().toString();
                 Files.write(Paths.get(outputPath), htmlContent.getBytes());
+                System.out.println("*****333* before generating:"   );
 
                 File pdfFile = pdfService.generatePdf(newFileName);
+                System.out.println(pdfFile.getAbsolutePath());
+
+                System.out.println(newFileName);
 
 
-                Resource resource = new ClassPathResource("templates/" + newFileName + ".pdf");
-
-                if (!resource.exists()) {
+                if (!pdfFile.exists()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
                 }
-
+                InputStream in = new FileInputStream(pdfFile);
+                InputStreamResource resource = new InputStreamResource(in);
                 return ResponseEntity.ok()
-                        .contentType(MediaType.APPLICATION_PDF)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + newFileName + ".pdf\"")
+                        .header("Content-disposition", "attachment; filename=cv.pdf")
+                        .header("Access-Control-Expose-Headers", "*")
+                        .contentLength(pdfFile.length())
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .body(resource);
+
 
             }
 
@@ -284,7 +294,8 @@ public class CVController {
 
         fileName.deleteCharAt(fileName.length() - 1);
 
-        fileName.append("_Resume_").append(Year.now().getValue());
+        fileName.append("_Resume_").append(Year.now().getValue())
+                .append("_").append(UUID.randomUUID().toString());
         return fileName.toString();
     }
 

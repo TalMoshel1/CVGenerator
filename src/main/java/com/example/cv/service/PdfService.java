@@ -1,4 +1,5 @@
 package com.example.cv.service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -11,16 +12,21 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class PdfService {
+    @Value("${home.folder}")
+    String homefolder;
+
+    @Value("${chrome.path}")
+    String chromePath;
 
     public File generatePdf(String newfilename) throws IOException, InterruptedException {
 
 
         Path tempPdfPath = Files.createTempFile("pdf-", ".pdf");
         File tempPdf = tempPdfPath.toFile();
+        File indexHtmlTemp = new File( homefolder +newfilename+ ".html");
+        File PDFpath = new File(homefolder  +newfilename+ ".pdf"); /* path that I declared */
 
         try {
-            Path indexHtmlTemp = Paths.get("/root/projects/cvGenerator/src/main/resources/templates/" +newfilename+ ".html");
-            File PDFpath = new File("/root/projects/cvGenerator/src/main/resources/templates/" +newfilename+ ".pdf"); /* path that I declared */
             Process process = Runtime.getRuntime().exec(getPdfGenerationCommand( PDFpath, indexHtmlTemp));
             process.waitFor(10000, TimeUnit.MILLISECONDS);
         } catch (IOException | InterruptedException e) {
@@ -30,24 +36,24 @@ public class PdfService {
 
         }
 
-        return tempPdf;
+        return PDFpath;
     }
 
-    public String getPdfGenerationCommand(File tempPdf, Path indexHtmlTemp) {
+    public String getPdfGenerationCommand(File tempPdf, File indexHtmlTemp) {
         if (tempPdf == null) {
             tempPdf = new File("/root/projects/cvGenerator/src/main/resources/CVTemplates/cv.pdf");
         }
 
-        if (indexHtmlTemp == null) {
-            indexHtmlTemp = Paths.get("/root/projects/cvGenerator/src/main/resources/CVTemplates/cv.html");
-        }
+//        if (indexHtmlTemp == null) {
+//            indexHtmlTemp = Paths.get("/root/projects/cvGenerator/src/main/resources/CVTemplates/cv.html");
+//        }
 
         String chromeCommandTemplate = "--no-sandbox --headless --disable-gpu --run-all-compositor-stages-before-draw --virtual-time-budget=30000 --print-to-pdf={{printToPdf}} {{indexHtml}} --no-pdf-header-footer --print-to-pdf-no-header";
-        String chromePath = System.getenv("chromepath");
+//        String chromePath = System.getenv("chromepath");
 
         return chromePath + " " + chromeCommandTemplate
                 .replace("{{printToPdf}}", tempPdf.getAbsolutePath())
-                .replace("{{indexHtml}}", indexHtmlTemp.toString());
+                .replace("{{indexHtml}}", indexHtmlTemp.getAbsolutePath());
     }
 
 }
