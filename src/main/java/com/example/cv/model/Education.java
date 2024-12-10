@@ -55,9 +55,8 @@ public class Education {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        System.out.println("education to string: "+ degree+ " "+ institution + " "+year);
         // Only include content if the degree, institution, and year are all present
-        if (degree != null && !degree.isEmpty() && institution != null && !institution.isEmpty() && year != null && !year.isEmpty()) {
+        if (degree != null && !degree.isEmpty() && institution != null && !institution.isEmpty()) {
 
             // Append <h2> for EDUCATION
             sb.append("<h2>EDUCATION</h2>");
@@ -68,20 +67,21 @@ public class Education {
             // Append the degree in <h3> tag
             sb.append("<h3>").append(degree);
 
-            // Append the institution before the year
             sb.append(" - ").append(institution);
 
-            // Append year inside a <span> if it's not null or empty
-            sb.append(" <span>").append(year).append("</span>");
+            if (year != null && !year.trim().isEmpty()) {
+                sb.append(" <span> (").append(year).append(")</span>");
+            }
 
-            // Close the h3 tag
             sb.append("</h3>");
 
             // If achievements are present, include them as a list
             if (achievements != null && !achievements.isEmpty()) {
                 sb.append("<ul>");
                 for (String achievement : achievements) {
-                    sb.append("<li>").append(achievement).append(".</li>");
+                    if (achievement != null && !achievement.trim().isEmpty()) {
+                        sb.append("<li>").append(achievement).append("</li>");
+                    }
                 }
                 sb.append("</ul>");
             }
@@ -93,6 +93,8 @@ public class Education {
             return "";
         }
 
+
+        System.out.println("education sb: "+ sb.toString());
         // Return the generated HTML string
         return sb.toString();
     }

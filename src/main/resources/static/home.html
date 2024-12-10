@@ -130,7 +130,7 @@ margin-top: 0.67rem;
             myTemplate: formData.get('template')
         };
 
-        try {
+          try {
             const response = await fetch('/api/file/generate', {
                 method: 'POST',
                 headers: {
@@ -140,16 +140,33 @@ margin-top: 0.67rem;
             });
 
             if (response.ok) {
-        const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'generated-cv.pdf';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-<!--                alert('CV successfully generated!');-->
+                // Extract the Content-Disposition header
+                const contentDisposition = response.headers.get('Content-Disposition');
+
+                console.log('content disposition: ', contentDisposition )
+
+                // Use regex to extract the file name from the header
+const matches = contentDisposition.match(/filename="?([^"]+)"?/);
+
+
+
+                let newFileName = "generated-cv.pdf";
+
+                if (matches && matches[1]) {
+                    newFileName = matches[1];
+
+                    newFileName = newFileName.replace(/(_\d{4}).*/, "$1");
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = newFileName + ".pdf";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
             } else {
                 alert('Failed to generate CV');
             }

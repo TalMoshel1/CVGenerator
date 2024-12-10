@@ -85,7 +85,8 @@ public class CVController {
         try {
             Gson gson = new Gson();
             Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata); // used to convert the data recieved JSON to map but Not neccessary probably
-//            String mockedDataOpenAi2 = InteractionToJson.processUserJson(mockedDataMap);
+            System.out.println("mockedData: "+ mockedDataMap);
+            String mockedDataOpenAi2 = interactionToJsonService.processUserJson(mockedDataMap);
             String mockedDataOpenAi = "{\n" +
                     "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
                     "  \"object\": \"chat.completion\",\n" +
@@ -121,40 +122,75 @@ public class CVController {
                     "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
                     "}\n";
 
-            String mockedDataOpenAi2 = "{\n" +
-                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-                    "  \"object\": \"chat.completion\",\n" +
-                    "  \"created\": 1732618207,\n" +
-                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-                    "  \"choices\": [\n" +
-                    "    {\n" +
-                    "      \"index\": 0,\n" +
-                    "      \"message\": {\n" +
-                    "        \"role\": \"assistant\",\n" +
-                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal MoshelHa\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"Express\\\", \\\"2FA\\\", \\\"nodemailer\\\", \\\"MongoDB\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n  ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
-                    "        \"refusal\": null\n" +
-                    "      },\n" +
-                    "      \"logprobs\": null,\n" +
-                    "      \"finish_reason\": \"stop\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"usage\": {\n" +
-                    "    \"prompt_tokens\": 511,\n" +
-                    "    \"completion_tokens\": 168,\n" +
-                    "    \"total_tokens\": 679,\n" +
-                    "    \"prompt_tokens_details\": {\n" +
-                    "      \"cached_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0\n" +
-                    "    },\n" +
-                    "    \"completion_tokens_details\": {\n" +
-                    "      \"reasoning_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0,\n" +
-                    "      \"accepted_prediction_tokens\": 0,\n" +
-                    "      \"rejected_prediction_tokens\": 0\n" +
-                    "    }\n" +
-                    "  },\n" +
-                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-                    "}\n";
+//            String mockedDataOpenAi2 = "{\n" +
+//                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
+//                    "  \"object\": \"chat.completion\",\n" +
+//                    "  \"created\": 1732618207,\n" +
+//                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
+//                    "  \"choices\": [\n" +
+//                    "    {\n" +
+//                    "      \"index\": 0,\n" +
+//                    "      \"message\": {\n" +
+//                    "        \"role\": \"assistant\",\n" +
+//                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal MoshelHa\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"1\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"Express\\\", \\\"2FA\\\", \\\"nodemailer\\\", \\\"MongoDB\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n  ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
+//                    "        \"refusal\": null\n" +
+//                    "      },\n" +
+//                    "      \"logprobs\": null,\n" +
+//                    "      \"finish_reason\": \"stop\"\n" +
+//                    "    }\n" +
+//                    "  ],\n" +
+//                    "  \"usage\": {\n" +
+//                    "    \"prompt_tokens\": 511,\n" +
+//                    "    \"completion_tokens\": 168,\n" +
+//                    "    \"total_tokens\": 679,\n" +
+//                    "    \"prompt_tokens_details\": {\n" +
+//                    "      \"cached_tokens\": 0,\n" +
+//                    "      \"audio_tokens\": 0\n" +
+//                    "    },\n" +
+//                    "    \"completion_tokens_details\": {\n" +
+//                    "      \"reasoning_tokens\": 0,\n" +
+//                    "      \"audio_tokens\": 0,\n" +
+//                    "      \"accepted_prediction_tokens\": 0,\n" +
+//                    "      \"rejected_prediction_tokens\": 0\n" +
+//                    "    }\n" +
+//                    "  },\n" +
+//                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
+//                    "}\n";
+
+//            String mockedDataOpenAi2 = "{\n" +
+//                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
+//                    "  \"object\": \"chat.completion\",\n" +
+//                    "  \"created\": 1732618207,\n" +
+//                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
+//                    "  \"choices\": [\n" +
+//                    "    {\n" +
+//                    "      \"index\": 0,\n" +
+//                    "      \"message\": {\n" +
+//                    "        \"role\": \"assistant\",\n" +
+//                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"\\\",\\n    \\\"email\\\": \\\"\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"\\\",\\n      \\\"company\\\": \\\"\\\",\\n      \\\"period\\\": \\\"\\\",\\n      \\\"responsibilities\\\": [\\\"\\\", \\\"\\\"]\\n    }, {\\n      \\\"title\\\": \\\"\\\",\\n      \\\"company\\\": \\\"\\\",\\n      \\\"period\\\": \\\"\\\",\\n      \\\"responsibilities\\\": [\\\"\\\", \\\"\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"Express\\\", \\\"2FA\\\", \\\"nodemailer\\\", \\\"MongoDB\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n  ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
+//                    "        \"refusal\": null\n" +
+//                    "      },\n" +
+//                    "      \"logprobs\": null,\n" +
+//                    "      \"finish_reason\": \"stop\"\n" +
+//                    "    }\n" +
+//                    "  ],\n" +
+//                    "  \"usage\": {\n" +
+//                    "    \"prompt_tokens\": 511,\n" +
+//                    "    \"completion_tokens\": 168,\n" +
+//                    "    \"total_tokens\": 679,\n" +
+//                    "    \"prompt_tokens_details\": {\n" +
+//                    "      \"cached_tokens\": 0,\n" +
+//                    "      \"audio_tokens\": 0\n" +
+//                    "    },\n" +
+//                    "    \"completion_tokens_details\": {\n" +
+//                    "      \"reasoning_tokens\": 0,\n" +
+//                    "      \"audio_tokens\": 0,\n" +
+//                    "      \"accepted_prediction_tokens\": 0,\n" +
+//                    "      \"rejected_prediction_tokens\": 0\n" +
+//                    "    }\n" +
+//                    "  },\n" +
+//                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
+//                    "}\n";
 
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> responseMap = objectMapper.readValue(mockedDataOpenAi2, Map.class);
@@ -176,9 +212,10 @@ public class CVController {
 
 
                 String personalDetailsJson = gson.toJson(requestData.get("personalDetails"));
+                String preferredCvTemplate = (String) requestData.get("preferredCvTemplate");
 
 
-
+                System.out.println("preferredCvTemplate: " + preferredCvTemplate);
                 JSONObject jsonObject = new JSONObject(personalDetailsJson);
                 String nameProp = jsonObject.getString("name");
                 String newFileName = generateFileName(nameProp);
@@ -230,23 +267,18 @@ public class CVController {
                 requestData.put("projectsSection", projectsSection);
                 requestData.put("armySection", armySection);
 
-                System.out.println("request Data: "+ requestData);
 
 
                 String templateName = "cv"; // Template file name without extension
-                String htmlContent = templateService.compileTemplateWithSections("1", requestData, jobs, educations, personalDetails, skillsSection, projectsSection, armySection);
-                System.out.println("*****111111111111*    after compile"  );
+                String htmlContent = templateService.compileTemplateWithSections(preferredCvTemplate, requestData, jobs, educations, personalDetails, skillsSection, projectsSection, armySection);
                 File htmlFile = new File(homeFolder + newFileName + ".html");
                 String outputPath = htmlFile.getAbsolutePath();
-                System.out.println("*****222222* html is:" + outputPath  );
 
                 Files.write(Paths.get(outputPath), htmlContent.getBytes());
-                System.out.println("*****333* before generating:"   );
 
                 File pdfFile = pdfService.generatePdf(newFileName);
-                System.out.println(pdfFile.getAbsolutePath());
 
-                System.out.println(newFileName);
+
 
 
                 if (!pdfFile.exists()) {
@@ -255,7 +287,7 @@ public class CVController {
                 InputStream in = new FileInputStream(pdfFile);
                 InputStreamResource resource = new InputStreamResource(in);
                 return ResponseEntity.ok()
-                        .header("Content-disposition", "attachment; filename=cv.pdf")
+                        .header("Content-disposition", "attachment; filename=" + newFileName +".pdf")
                         .header("Access-Control-Expose-Headers", "*")
                         .contentLength(pdfFile.length())
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)

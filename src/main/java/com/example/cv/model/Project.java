@@ -78,7 +78,6 @@ public class Project {
     @Override
     public String toString() {
         if (project == null || project.isEmpty()) {
-            System.out.println("project: "+ project);
             return "";
         }
         StringBuilder sb = new StringBuilder();
@@ -131,7 +130,6 @@ public class Project {
         // Close project section
         sb.append("</div>");
 
-        System.out.println("sb: "+ sb);
 
         return sb.toString();
     }

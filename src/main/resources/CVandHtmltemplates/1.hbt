@@ -50,10 +50,7 @@
                                                   .first-line {
                                                   margin-top: 1.245rem;
                                                   }
-       .experience ul li::after,
-       .educations ul li::after {
-         content: ".";
-       }
+
 
 
 
@@ -163,7 +160,7 @@
                 <li><span>LINKEDIN</span> <a href="{{personalDetails.linkedIn}}">{{personalDetails.name}}</a></li>
               {{/if}}
               {{#if personalDetails.gitHub}}
-                <li><span>GITHUB</span> <a href="https://github.com/{{personalDetails.gitHub}}">{{personalDetails.name}}</a></li>
+                <li><span>GITHUB</span> <a href="{{personalDetails.gitHub}}">{{personalDetails.name}}</a></li>
               {{/if}}
             </ul>
 
@@ -177,17 +174,28 @@
             </section>
             {{/if}}
 
- <section class="section experience">
-   <h2>PROFESSIONAL EXPERIENCE</h2>
-   {{#each workSection}}
-     <h3>{{title}} - {{company}} <span>({{period}})</span></h3>
-     <ul>
-       {{#each responsibilities}}
-         <li>{{this}}</li>
-       {{/each}}
-     </ul>
-   {{/each}}
- </section>
+<section class="section experience">
+  {{#if jobs.[0].title}}
+    <h2>WORK EXPERIENCE</h2>
+  {{/if}}
+
+  {{#each jobs}}
+      {{#if company}}
+        <h3>{{title}} - {{company}}<span class="year"> ({{period}})</span></h3>
+      {{/if}}
+      {{#if responsibilities}}
+        <ul>
+      {{#each responsibilities}}
+        {{#if this}}
+          <li>{{this}}</li>
+        {{/if}}
+      {{/each}}
+        </ul>
+      {{/if}}
+  {{/each}}
+</section>
+
+
 
 <section class="section educations">
     {{#if educationSection.length}}

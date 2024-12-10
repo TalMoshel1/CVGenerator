@@ -39,13 +39,14 @@ public class HtmlGenerator {
 // Check if GitHub URL is provided and ensure it has a scheme (add 'http://' if missing)
             if (personalDetails.getGitHub() != null && !personalDetails.getGitHub().isEmpty()) {
                 String gitHubUrl = personalDetails.getGitHub();
-                System.out.println("gitHubUrl: "+ gitHubUrl);
                 // Check if the URL doesn't start with 'http://' or 'https://', and prepend 'http://'
                 if (!gitHubUrl.startsWith("http://") && !gitHubUrl.startsWith("https://")) {
                     gitHubUrl = "http://" + gitHubUrl;  // Add http:// if no scheme is present
                 }
                 personalInfoSection.append("<li>GITHUB: <a href=\"").append(gitHubUrl).append("\">").append(gitHubUrl).append("</a></li>");
             }
+
+            System.out.println("personal info: "+ personalInfoSection);
 
             // Append summary
 
@@ -76,21 +77,43 @@ public class HtmlGenerator {
 
     public String generateWorkSection(List<Job> jobs) {
         StringBuilder workSection = new StringBuilder();
+
+        // Check if the list is not empty and the first job has a valid title
+        if (jobs != null && !jobs.isEmpty() && jobs.get(0).getTitle() != null && !jobs.get(0).getTitle().isEmpty()) {
+            workSection.append("<h2>WORK EXPERIENCE</h2>");
+        }
+
+        // Loop through each job in the list
         for (Job job : jobs) {
-            System.out.println("Generating work section for job: " + job.getTitle());
-            workSection.append("<div class='job'>")
+
+            workSection
                     .append("<h3>")
                     .append(job.getTitle() != null ? job.getTitle() : "Title Missing")
-                    .append("</h3>")
-                    .append("<p>").append(job.getCompany()).append("<span class='year'>").append(" - (").append(job.getPeriod()).append("</span>").append(")</p>")
-                    .append("<ul>");
-            for (String responsibility : job.getResponsibilities()) {
-                if (!responsibility.isEmpty()) {
-                    workSection.append("<li>").append(responsibility).append(".</li>");
-                }
+                    .append("</h3>");
+
+            // Add company and period only if they are not empty or null
+            if (job.getCompany() != null && !job.getCompany().isEmpty()) {
+                workSection.append("<p>")
+                        .append(job.getCompany())
+                        .append("<span class='year'> - (")
+                        .append(job.getPeriod() != null ? job.getPeriod() : "")
+                        .append(")</span></p>");
             }
-            workSection.append("</ul></div>");
+
+            // Add responsibilities if any
+            if (job.getResponsibilities() != null && !job.getResponsibilities().isEmpty()) {
+                workSection.append("<ul>");
+                for (String responsibility : job.getResponsibilities()) {
+                    if (responsibility != null && !responsibility.isEmpty()) {
+                        workSection.append("<li>").append(responsibility).append("</li>");
+                    }
+                }
+                workSection.append("</ul>");
+            }
         }
+
+        System.out.println("work section: "+ workSection.toString());
+
         return workSection.toString();
     }
 
@@ -110,7 +133,6 @@ public class HtmlGenerator {
             educationSection.append("<div class='education'>");
 
             if (education.getDegree() != null && !education.getDegree().isEmpty()) {
-                System.out.println("get degree: "+ education.getDegree());
                 educationSection.append("<h3>").append(education.getDegree());
 
                 if (education.getYear() != null && !education.getYear().isEmpty()) {
@@ -126,13 +148,18 @@ public class HtmlGenerator {
             if (education.getAchievements() != null && !education.getAchievements().isEmpty()) {
                 educationSection.append("<ul>");
                 for (String achievement : education.getAchievements()) {
-                    educationSection.append("<li>").append(achievement).append(".</li>");
+                    if (achievement != null && !achievement.trim().isEmpty()) {
+                        educationSection.append("<li>").append(achievement).append("</li>");
+                    }
                 }
+
                 educationSection.append("</ul>");
             }
 
             educationSection.append("</div>");
         }
+
+        System.out.println("education ht,l builder: "+ educationSection.toString());
 
         return educationSection.toString();
     }
@@ -140,7 +167,6 @@ public class HtmlGenerator {
 
         StringBuilder skillsSection = new StringBuilder();
 
-        System.out.println("skills: " + skills);
 
         // Check if the list is not empty and contains at least one non-empty skill
         boolean hasValidSkills = skills != null && skills.stream()
@@ -171,7 +197,6 @@ public class HtmlGenerator {
     public String generateProjectSection(List<Project> projects) {
         StringBuilder projectSection = new StringBuilder();
 
-        System.out.println("projects input: "+projects.toString());
 
         // Check if the projects list is not empty
         if (projects != null && projects.size() > 0 && !projects.isEmpty() && projects.get(0) != null && projects.get(0).getProject() != null && !projects.get(0).getProject().isBlank()) {
@@ -196,17 +221,21 @@ public class HtmlGenerator {
 
             Project.Urls urls = project.getUrls();
             if (urls != null) {
+                System.out.println("why its getting in the urls != null???");
                 if (urls.getGithubRepository() != null && !urls.getGithubRepository().isEmpty()) {
+
                     // Iterate through each GitHub repository
                     for (String repo : urls.getGithubRepository()) {
-                        String absoluteRepoUrl = repo.startsWith("http://") || repo.startsWith("https://") ? repo : "http://" + repo;
+                        // Check if the repository is not null or an empty string
+                        if (repo != null && !repo.trim().isEmpty()) {
+                            String absoluteRepoUrl = repo.startsWith("http://") || repo.startsWith("https://") ? repo : "http://" + repo;
 
-                        projectSection.append("<a href='").append(absoluteRepoUrl).append("' target='_blank'>")
-                                .append(repo).append(" </a>").append("<span class='blank'> </span>");
+                            projectSection.append("<a href='").append(absoluteRepoUrl).append("' target='_blank'>")
+                                    .append("Github Repository").append(" </a>").append("<span class='blank'> </span>");
+                        }
                     }
                 }
 
-                // Check if the live URL is not null or empty
                 if (urls.getLive() != null && !urls.getLive().isEmpty()) {
                     String absoluteLiveUrl = urls.getLive().startsWith("http://") || urls.getLive().startsWith("https://")
                             ? urls.getLive()
@@ -225,7 +254,6 @@ public class HtmlGenerator {
             projectSection.append("</div>");
         }
 
-        System.out.println("projectSection: " + projectSection);
 
         return projectSection.toString();
     }

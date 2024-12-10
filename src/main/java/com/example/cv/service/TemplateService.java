@@ -57,32 +57,9 @@ public class TemplateService {
         return compileTemplate(templateName, data);
     }
 
-    /**
-     * Compiles a Handlebars template with the given data.
-     */
-//    public String compileTemplate(String templateName, Map<String, Object> data) throws Exception {
-//        // Load the template file from the resources
-//        String templatePath = "/CVandHtmltemplates/" + templateName + ".hbt";
-//        InputStream inputStream = getClass().getResourceAsStream(templatePath);
-//
-//        if (inputStream == null) {
-//            throw new IllegalArgumentException("Template file not found: " + templatePath);
-//        }
-//
-//        // Read the template content
-//        String templateContent;
-//        try (Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name())) {
-//            templateContent = scanner.useDelimiter("\\A").next(); // Read the entire content
-//        }
-//
-//        // Compile the template
-//        Template template = handlebars.compileInline(templateContent);
-//        System.out.println("template service: "+template.apply(data));
-//        return template.apply(data);
-//    }
+
 
     public String compileTemplate(String templateName, Map<String, Object> data) throws IOException {
-        System.out.println("data: "+ data);
         String templatePath = "/CVandHtmltemplates/" + templateName + ".hbt";
 
         // Load the template file

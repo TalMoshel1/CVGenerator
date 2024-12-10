@@ -55,25 +55,26 @@ public class Job {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        // If the title, company, and responsibilities are all invalid, return an empty string
-        if ((getTitle() == null || getTitle().isEmpty()) &&
-                (getCompany() == null || getCompany().isEmpty()) &&
-                (responsibilities == null || responsibilities.isEmpty())) {
-            return "";  // Return empty string if no valid data
+        // Only process valid title
+        if (getTitle() == null || getTitle().isEmpty()) {
+            return ""; // No content if the title is invalid
         }
 
-        // Only generate title if it's valid
-        if (getTitle() != null && !getTitle().isEmpty()) {
-            sb.append("<h3>").append(getTitle()).append(" - ").append(getCompany());
-
-            // Generate period if valid
-            if (getPeriod() != null && !getPeriod().isEmpty()) {
-                sb.append(" <span>(").append(getPeriod()).append(")</span>");
-            }
-            sb.append("</h3>");
+        // Start building the <h3> tag with title and company
+        sb.append("<h3>").append(getTitle());
+        if (getCompany() != null && !getCompany().isEmpty()) {
+            sb.append(" - ").append(getCompany());
         }
 
-        // Generate responsibilities if valid
+        // Add the period within a <span> tag if it exists
+        if (getPeriod() != null && !getPeriod().isEmpty()) {
+            sb.append(" <span>(").append(getPeriod()).append(")</span>");
+        }
+        sb.append("</h3>");
+
+        // Add company and period within a <p> element (if applicable)
+
+        // Add responsibilities if valid
         if (responsibilities != null && !responsibilities.isEmpty()) {
             sb.append("<ul>");
             responsibilities.forEach(responsibility -> {
@@ -83,9 +84,11 @@ public class Job {
             });
             sb.append("</ul>");
         }
-        System.out.println("sb.toString: " + sb.toString());
+        System.out.println("job sb: "+ sb.toString());
         return sb.toString();
     }
+
+
 
 
 }
