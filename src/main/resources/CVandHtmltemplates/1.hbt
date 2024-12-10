@@ -133,6 +133,10 @@
          font-weight: bold;
          }
 
+                .project {
+                      margin-bottom: 1.5rem;
+                    }
+
          .one-line-army h2{
          font-size: 1.5rem;
          margin-top: 0;
@@ -198,11 +202,12 @@
 
 
 <section class="section educations">
-    {{#if educationSection.length}}
-      {{#each educationSection}}
-          {{{this}}}
-      {{/each}}
-    {{/if}}
+  {{#if educationSection.length}}
+    <h2>EDUCATION</h2>
+    {{#each educationSection}}
+      {{{this}}}
+    {{/each}}
+  {{/if}}
 </section>
 
     <section class="section skills">

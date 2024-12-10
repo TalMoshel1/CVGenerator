@@ -125,10 +125,6 @@ public class HtmlGenerator {
     public String generateEducationSection(List<Education> educations) {
         StringBuilder educationSection = new StringBuilder();
 
-        if (educations != null && !educations.isEmpty()) {
-            educationSection.append("<h2>EDUCATION</h2>");
-        }
-
         for (Education education : educations) {
             educationSection.append("<div class='education'>");
 

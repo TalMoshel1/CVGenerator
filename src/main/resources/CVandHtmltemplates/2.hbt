@@ -110,7 +110,9 @@
 
            }
 
-
+       .project {
+             margin-bottom: 1.5rem;
+           }
 
            .personal-details {
              justify-items:center;

@@ -59,7 +59,7 @@ public class Education {
         if (degree != null && !degree.isEmpty() && institution != null && !institution.isEmpty()) {
 
             // Append <h2> for EDUCATION
-            sb.append("<h2>EDUCATION</h2>");
+
 
             // Start the div with class 'education'
             sb.append("<div class='education'>");
