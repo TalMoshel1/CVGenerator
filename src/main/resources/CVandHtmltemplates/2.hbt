@@ -9,6 +9,14 @@
        font-family: Arial, sans-serif;
      }
 
+            .experience ul, .education h3 , .one-line-army .body{
+               width: 50vw;
+          margin-left: 0;
+          margin-left: 0;
+          margin-right: 0;
+          text-align: left;
+           }
+
             a {
             color: black;
             }
