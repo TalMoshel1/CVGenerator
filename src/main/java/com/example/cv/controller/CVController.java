@@ -95,7 +95,6 @@ public class CVController {
                 Map<String, Object> message = (Map<String, Object>) firstChoice.get("message");
                 String aiResultContent = (String) message.get("content");
 
-                // Remove the ```json and ending ```
                 if (aiResultContent != null) {
                     aiResultContent = aiResultContent.replaceFirst("^```json\\n", "").replaceFirst("\\n```$", "");
                 }
@@ -117,7 +116,6 @@ public class CVController {
 
                 PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
 
-                // Deserialize jobs
                 String jobsJson = gson.toJson(requestData.get("jobs"));
                 List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {
                 }.getType());
