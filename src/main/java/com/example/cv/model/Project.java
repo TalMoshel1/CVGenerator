@@ -11,7 +11,6 @@ public class Project {
     private String body;
     private Urls urls;
 
-    // Getters and Setters
     public String getRole() {
         return role;
     }
@@ -52,7 +51,6 @@ public class Project {
         this.urls = urls;
     }
 
-    // Inner class for URLs
     public static class Urls {
         private List<String> githubRepository;
         private String live;
@@ -82,13 +80,8 @@ public class Project {
         }
         StringBuilder sb = new StringBuilder();
 
-        // Add PROJECTS header
-//        sb.append("<h2 class='PROJECTS'>PROJECTS</h2>");
-
-        // Start project section
         sb.append("<div class='project'>");
 
-        // Add project title and technologies
         if (!project.isEmpty()) {
             sb.append("<div class='first-line'>")
                     .append("<h2>").append(project).append("</h2>");
@@ -104,7 +97,6 @@ public class Project {
             sb.append("</div>");
         }
 
-        // Add URLs
         if (urls != null) {
             if (urls.getGithubRepository() != null && !urls.getGithubRepository().isEmpty()) {
                 for (String repo : urls.getGithubRepository()) {
@@ -122,12 +114,10 @@ public class Project {
             }
         }
 
-        // Add project description
         if (body != null && !body.isEmpty()) {
             sb.append("<p>").append(body).append("</p>");
         }
 
-        // Close project section
         sb.append("</div>");
 
 
