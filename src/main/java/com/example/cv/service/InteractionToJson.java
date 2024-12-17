@@ -97,7 +97,6 @@ public class InteractionToJson {
                     "  }\n" +
                     "}";
 
-            // Create the OpenAI request
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
