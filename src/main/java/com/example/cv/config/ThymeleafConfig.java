@@ -20,7 +20,7 @@ public class ThymeleafConfig {
     @Bean
     public ClassLoaderTemplateResolver templateResolver() {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/");  // Where your Thymeleaf templates are located
+        templateResolver.setPrefix("templates/");  
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
         return templateResolver;
