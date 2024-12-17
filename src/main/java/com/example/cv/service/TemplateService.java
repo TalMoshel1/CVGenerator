@@ -68,7 +68,6 @@ public class TemplateService {
 
             String templateContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            // Compile and apply the template
             Template template = handlebars.compileInline(templateContent);
             String renderedTemplate = template.apply(data);
             return renderedTemplate;
