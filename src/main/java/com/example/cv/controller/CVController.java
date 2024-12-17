@@ -102,45 +102,28 @@ public class CVController {
 
                 Map<String, Object> requestData = gson.fromJson(aiResultContent, new TypeToken<Map<String, Object>>() {
                 }.getType());
-
-
-
                 String personalDetailsJson = gson.toJson(requestData.get("personalDetails"));
                 String preferredCvTemplate = (String) requestData.get("preferredCvTemplate");
-
-
-                System.out.println("preferredCvTemplate: " + preferredCvTemplate);
                 JSONObject jsonObject = new JSONObject(personalDetailsJson);
                 String nameProp = jsonObject.getString("name");
                 String newFileName = generateFileName(nameProp);
-
                 PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
-
                 String jobsJson = gson.toJson(requestData.get("jobs"));
                 List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {
                 }.getType());
 
                 String educationsJson = gson.toJson(requestData.get("educations"));
-
-
                 String SkillsJson = gson.toJson(requestData.get("Skills"));
-
                 String projectsJson = gson.toJson(requestData.get("projects"));
-
                 String armyJson = gson.toJson(requestData.get("army"));
-
                 Army armyDetails = gson.fromJson(armyJson, Army.class);
-
-
                 List<Education> educations = gson.fromJson(educationsJson, new TypeToken<List<Education>>() {
                 }.getType());
-
                 List<Project> projects = gson.fromJson(projectsJson, new TypeToken<List<Project>>() {
                 }.getType());
 
                 List<String> skills = gson.fromJson(SkillsJson, new TypeToken<List<String>>() {
                 }.getType());
-                // Generate HTML sections for work and education and privateDetails
                 String armySection = htmlGenerator.generateArmySection(armyDetails);
                 String privateDetailsSection = htmlGenerator.generatePersonalInfoSection(personalDetails);
                 String workSection = htmlGenerator.generateWorkSection(jobs);
@@ -180,8 +163,6 @@ public class CVController {
                         .contentLength(pdfFile.length())
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
                         .body(resource);
-
-
             }
 
 
@@ -218,12 +199,6 @@ public class CVController {
                 .append("_").append(UUID.randomUUID().toString());
         return fileName.toString();
     }
-
-
-
-
-
-
 }
 
 
