@@ -38,5 +38,4 @@ public class PdfContent {
         this.styleProperties = styleProperties;
     }
 
-    // Getters and setters for each property
 }
