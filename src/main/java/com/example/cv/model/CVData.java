@@ -8,8 +8,6 @@ public class CVData {
     private List<Map<String, String>> proExperience;
     private List<Map<String, String>> education;
 
-    // Getters and setters
-
     public Map<String, String> getPersonalInfo() {
         return personalInfo;
     }
