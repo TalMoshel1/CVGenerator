@@ -26,12 +26,11 @@ public class CustomPDFTextStripper extends PDFTextStripper {
         textStyle.put("positionX", text.getXDirAdj());
         textStyle.put("positionY", text.getYDirAdj());
 
-        // Attempt to access color information if available
         try {
             PDColor color = getGraphicsState().getNonStrokingColor();
             textStyle.put("color", color != null ? color.toString() : "N/A");
         } catch (Exception e) {
-            textStyle.put("color", "Unknown"); // Fallback if color isn't available
+            textStyle.put("color", "Unknown");
         }
 
         styleProperties.put(text.getUnicode(), textStyle);
