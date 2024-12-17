@@ -6,7 +6,7 @@ import java.util.Map;
 public class PdfContent {
     private String filename;
     private String text;
-    private Map<String, Object> styleProperties; // To store font, color, position details
+    private Map<String, Object> styleProperties; 
 
     public PdfContent(String filename, String text, Map<String, Object> styleProperties) {
         this.filename = filename;
