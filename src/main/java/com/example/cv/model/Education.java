@@ -10,7 +10,6 @@ public class Education {
     private String year;
     private List<String> achievements;
 
-    // Constructor with optional arguments
     public Education(String degree, String institution, String year, List<String> achievements) {
         this.degree = degree != null ? degree : "";
         this.institution = institution != null ? institution : "";
@@ -18,7 +17,6 @@ public class Education {
         this.achievements = achievements != null ? achievements : new ArrayList<>();
     }
 
-    // Getters and setters
     public String getDegree() {
         return degree;
     }
@@ -51,7 +49,6 @@ public class Education {
         this.achievements = achievements;
     }
 
-    // Override toString() method to display education information
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -61,10 +58,8 @@ public class Education {
             // Append <h2> for EDUCATION
 
 
-            // Start the div with class 'education'
             sb.append("<div class='education'>");
 
-            // Append the degree in <h3> tag
             sb.append("<h3>").append(degree);
 
             sb.append(" - ").append(institution);
@@ -75,7 +70,6 @@ public class Education {
 
             sb.append("</h3>");
 
-            // If achievements are present, include them as a list
             if (achievements != null && !achievements.isEmpty()) {
                 sb.append("<ul>");
                 for (String achievement : achievements) {
@@ -86,16 +80,11 @@ public class Education {
                 sb.append("</ul>");
             }
 
-            // Close the div tag
             sb.append("</div>");
         } else {
-            // If any fields are missing, return an empty string (no content)
             return "";
         }
 
-
-        System.out.println("education sb: "+ sb.toString());
-        // Return the generated HTML string
         return sb.toString();
     }
 
