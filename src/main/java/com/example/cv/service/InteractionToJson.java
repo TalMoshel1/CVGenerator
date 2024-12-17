@@ -22,7 +22,6 @@ public class InteractionToJson {
 
     public String processUserJson(Map<String, Object> userData) {
         try {
-            // Serialize Map to JSON string
             ObjectMapper objectMapper = new ObjectMapper();
             String userInputJson = objectMapper.writeValueAsString(userData);
 
