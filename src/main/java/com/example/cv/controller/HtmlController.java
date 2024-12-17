@@ -12,13 +12,6 @@ public class HtmlController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        // ... Your existing code for "home" page ...
-        return "home"; // This will render 'home.html'
+        return "home";
     }
-
-//    @GetMapping("/test")
-//    public String test(Model model) {
-//        // ... Your existing code for "test" page ...
-//        return "test"; // This will render 'test.html'
-//    }
 }
