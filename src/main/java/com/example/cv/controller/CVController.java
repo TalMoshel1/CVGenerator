@@ -87,111 +87,6 @@ public class CVController {
             Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata); // used to convert the data recieved JSON to map but Not neccessary probably
             System.out.println("mockedData: "+ mockedDataMap);
             String mockedDataOpenAi2 = interactionToJsonService.processUserJson(mockedDataMap);
-            String mockedDataOpenAi = "{\n" +
-                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-                    "  \"object\": \"chat.completion\",\n" +
-                    "  \"created\": 1732618207,\n" +
-                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-                    "  \"choices\": [\n" +
-                    "    {\n" +
-                    "      \"index\": 0,\n" +
-                    "      \"message\": {\n" +
-                    "        \"role\": \"assistant\",\n" +
-                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal Moshel\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"www.blibli.com\\\",\\n    \\\"gitHub\\\": \\\"www.blabla.com\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\"\\n}\\n```\",\n" +
-                    "        \"refusal\": null\n" +
-                    "      },\n" +
-                    "      \"logprobs\": null,\n" +
-                    "      \"finish_reason\": \"stop\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"usage\": {\n" +
-                    "    \"prompt_tokens\": 511,\n" +
-                    "    \"completion_tokens\": 168,\n" +
-                    "    \"total_tokens\": 679,\n" +
-                    "    \"prompt_tokens_details\": {\n" +
-                    "      \"cached_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0\n" +
-                    "    },\n" +
-                    "    \"completion_tokens_details\": {\n" +
-                    "      \"reasoning_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0,\n" +
-                    "      \"accepted_prediction_tokens\": 0,\n" +
-                    "      \"rejected_prediction_tokens\": 0\n" +
-                    "    }\n" +
-                    "  },\n" +
-                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-                    "}\n";
-
-//            String mockedDataOpenAi2 = "{\n" +
-//                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-//                    "  \"object\": \"chat.completion\",\n" +
-//                    "  \"created\": 1732618207,\n" +
-//                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-//                    "  \"choices\": [\n" +
-//                    "    {\n" +
-//                    "      \"index\": 0,\n" +
-//                    "      \"message\": {\n" +
-//                    "        \"role\": \"assistant\",\n" +
-//                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal MoshelHa\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n     ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"1\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"\\\", \\\"\\\", \\\"\\\", \\\"\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n , {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"\\\", \\\"\\\", \\\"\\\", \\\"\\\"],\\n      \\\"body\\\": \\\"\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
-//                    "        \"refusal\": null\n" +
-//                    "      },\n" +
-//                    "      \"logprobs\": null,\n" +
-//                    "      \"finish_reason\": \"stop\"\n" +
-//                    "    }\n" +
-//                    "  ],\n" +
-//                    "  \"usage\": {\n" +
-//                    "    \"prompt_tokens\": 511,\n" +
-//                    "    \"completion_tokens\": 168,\n" +
-//                    "    \"total_tokens\": 679,\n" +
-//                    "    \"prompt_tokens_details\": {\n" +
-//                    "      \"cached_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0\n" +
-//                    "    },\n" +
-//                    "    \"completion_tokens_details\": {\n" +
-//                    "      \"reasoning_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0,\n" +
-//                    "      \"accepted_prediction_tokens\": 0,\n" +
-//                    "      \"rejected_prediction_tokens\": 0\n" +
-//                    "    }\n" +
-//                    "  },\n" +
-//                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-//                    "}\n";
-
-//            String mockedDataOpenAi2 = "{\n" +
-//                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-//                    "  \"object\": \"chat.completion\",\n" +
-//                    "  \"created\": 1732618207,\n" +
-//                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-//                    "  \"choices\": [\n" +
-//                    "    {\n" +
-//                    "      \"index\": 0,\n" +
-//                    "      \"message\": {\n" +
-//                    "        \"role\": \"assistant\",\n" +
-//                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"\\\",\\n    \\\"email\\\": \\\"\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"\\\",\\n      \\\"company\\\": \\\"\\\",\\n      \\\"period\\\": \\\"\\\",\\n      \\\"responsibilities\\\": [\\\"\\\", \\\"\\\"]\\n    }, {\\n      \\\"title\\\": \\\"\\\",\\n      \\\"company\\\": \\\"\\\",\\n      \\\"period\\\": \\\"\\\",\\n      \\\"responsibilities\\\": [\\\"\\\", \\\"\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"Express\\\", \\\"2FA\\\", \\\"nodemailer\\\", \\\"MongoDB\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n  ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
-//                    "        \"refusal\": null\n" +
-//                    "      },\n" +
-//                    "      \"logprobs\": null,\n" +
-//                    "      \"finish_reason\": \"stop\"\n" +
-//                    "    }\n" +
-//                    "  ],\n" +
-//                    "  \"usage\": {\n" +
-//                    "    \"prompt_tokens\": 511,\n" +
-//                    "    \"completion_tokens\": 168,\n" +
-//                    "    \"total_tokens\": 679,\n" +
-//                    "    \"prompt_tokens_details\": {\n" +
-//                    "      \"cached_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0\n" +
-//                    "    },\n" +
-//                    "    \"completion_tokens_details\": {\n" +
-//                    "      \"reasoning_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0,\n" +
-//                    "      \"accepted_prediction_tokens\": 0,\n" +
-//                    "      \"rejected_prediction_tokens\": 0\n" +
-//                    "    }\n" +
-//                    "  },\n" +
-//                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-//                    "}\n";
-
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> responseMap = objectMapper.readValue(mockedDataOpenAi2, Map.class);
 
@@ -227,10 +122,8 @@ public class CVController {
                 List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {
                 }.getType());
 
-                // Deserialize educations
                 String educationsJson = gson.toJson(requestData.get("educations"));
 
-                // Deserialize Skills
 
                 String SkillsJson = gson.toJson(requestData.get("Skills"));
 
@@ -247,8 +140,6 @@ public class CVController {
                 List<Project> projects = gson.fromJson(projectsJson, new TypeToken<List<Project>>() {
                 }.getType());
 
-
-
                 List<String> skills = gson.fromJson(SkillsJson, new TypeToken<List<String>>() {
                 }.getType());
                 // Generate HTML sections for work and education and privateDetails
@@ -259,7 +150,6 @@ public class CVController {
                 String skillsSection = htmlGenerator.generateSkillsSection(skills);
                 String projectsSection = htmlGenerator.generateProjectSection(projects);
 
-                // Add generated HTML sections and other data to the map
                 requestData.put("workSection", workSection);
                 requestData.put("educationSection", educationSection);
                 requestData.put("personalDetailsSection", personalDetails);
