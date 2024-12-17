@@ -121,9 +121,6 @@ public class InteractionToJson {
                     entity,
                     String.class
             );
-
-            // Return the full OpenAI response body as-is
-            System.out.println("response: "+ response.getBody());
             return response.getBody();
 
         } catch (Exception e) {
