@@ -10,7 +10,6 @@ public class Job {
     private String period;
     private List<String> responsibilities;
 
-    // Constructor with optional arguments
     public Job(String title, String company, String period, List<String> responsibilities) {
         this.title = title != null ? title : "";
         this.company = company != null ? company : "";
@@ -18,7 +17,6 @@ public class Job {
         this.responsibilities = responsibilities != null ? responsibilities : new ArrayList<>();
     }
 
-    // Getters and setters
     public String getTitle() {
         return title;
     }
@@ -55,26 +53,20 @@ public class Job {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        // Only process valid title
         if (getTitle() == null || getTitle().isEmpty()) {
             return ""; // No content if the title is invalid
         }
 
-        // Start building the <h3> tag with title and company
         sb.append("<h3>").append(getTitle());
         if (getCompany() != null && !getCompany().isEmpty()) {
             sb.append(" - ").append(getCompany());
         }
 
-        // Add the period within a <span> tag if it exists
         if (getPeriod() != null && !getPeriod().isEmpty()) {
             sb.append(" <span>(").append(getPeriod()).append(")</span>");
         }
         sb.append("</h3>");
 
-        // Add company and period within a <p> element (if applicable)
-
-        // Add responsibilities if valid
         if (responsibilities != null && !responsibilities.isEmpty()) {
             sb.append("<ul>");
             responsibilities.forEach(responsibility -> {
@@ -84,7 +76,6 @@ public class Job {
             });
             sb.append("</ul>");
         }
-        System.out.println("job sb: "+ sb.toString());
         return sb.toString();
     }
 
