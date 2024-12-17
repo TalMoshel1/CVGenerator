@@ -18,6 +18,6 @@ public class JsonToStringMapConverter {
         String jsonString = gson.toJson(jsonObject);
 
         Type type = new TypeToken<Map<String, Object>>() {}.getType();
-        return gson.fromJson(jsonString, type);  // This will return the Map
+        return gson.fromJson(jsonString, type); 
     }
 }
