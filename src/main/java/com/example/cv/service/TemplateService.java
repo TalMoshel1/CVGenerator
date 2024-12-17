@@ -26,7 +26,6 @@ public class TemplateService {
         this.handlebars = new Handlebars();
         this.htmlGenerator = htmlGenerator;
 
-        // Register custom helpers or decorators if needed
         handlebars.registerHelper("dateFormat", (context, options) -> {
             String format = options.param(0, "yyyy-MM-dd");
             try {
@@ -62,27 +61,21 @@ public class TemplateService {
     public String compileTemplate(String templateName, Map<String, Object> data) throws IOException {
         String templatePath = "/CVandHtmltemplates/" + templateName + ".hbt";
 
-        // Load the template file
         try (InputStream inputStream = getClass().getResourceAsStream(templatePath)) {
             if (inputStream == null) {
                 throw new IllegalArgumentException("Template file not found: " + templatePath);
             }
 
-            // Read the template content
             String templateContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
             // Compile and apply the template
             Template template = handlebars.compileInline(templateContent);
             String renderedTemplate = template.apply(data);
-
-            // Debugging output
-
             return renderedTemplate;
         }
     }
-    /**
-     * Saves the generated HTML content to a file.
-     */
+
+
     public void saveHtmlFile(String htmlContent, String outputPath) throws Exception {
         java.nio.file.Path path = java.nio.file.Path.of(outputPath);
         java.nio.file.Files.writeString(path, htmlContent);
