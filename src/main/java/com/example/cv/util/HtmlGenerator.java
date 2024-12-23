@@ -46,7 +46,6 @@ public class HtmlGenerator {
                 personalInfoSection.append("<li>GITHUB: <a href=\"").append(gitHubUrl).append("\">").append(gitHubUrl).append("</a></li>");
             }
 
-            System.out.println("personal info: "+ personalInfoSection);
 
             // Append summary
 
@@ -112,8 +111,6 @@ public class HtmlGenerator {
             }
         }
 
-        System.out.println("work section: "+ workSection.toString());
-
         return workSection.toString();
     }
 
@@ -155,7 +152,6 @@ public class HtmlGenerator {
             educationSection.append("</div>");
         }
 
-        System.out.println("education ht,l builder: "+ educationSection.toString());
 
         return educationSection.toString();
     }
@@ -217,7 +213,6 @@ public class HtmlGenerator {
 
             Project.Urls urls = project.getUrls();
             if (urls != null) {
-                System.out.println("why its getting in the urls != null???");
                 if (urls.getGithubRepository() != null && !urls.getGithubRepository().isEmpty()) {
 
                     // Iterate through each GitHub repository

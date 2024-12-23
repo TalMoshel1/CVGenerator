@@ -84,78 +84,10 @@ public class CVController {
 
         try {
             Gson gson = new Gson();
-            Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata); // used to convert the data recieved JSON to map but Not neccessary probably
-            System.out.println("mockedData: "+ mockedDataMap);
-            String mockedDataOpenAi2 = interactionToJsonService.processUserJson(mockedDataMap);
-            String mockedDataOpenAi = "{\n" +
-                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-                    "  \"object\": \"chat.completion\",\n" +
-                    "  \"created\": 1732618207,\n" +
-                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-                    "  \"choices\": [\n" +
-                    "    {\n" +
-                    "      \"index\": 0,\n" +
-                    "      \"message\": {\n" +
-                    "        \"role\": \"assistant\",\n" +
-                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal Moshel\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"www.blibli.com\\\",\\n    \\\"gitHub\\\": \\\"www.blabla.com\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n    {\\n      \\\"degree\\\": \\\"Bachelor's Degree in Computer Science\\\",\\n      \\\"institution\\\": \\\"ABC University\\\",\\n      \\\"year\\\": \\\"2022 - 2024\\\",\\n      \\\"achievements\\\": [\\n        \\\"Best student\\\"\\n      ]\\n    }\\n  ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"\\\"\\n}\\n```\",\n" +
-                    "        \"refusal\": null\n" +
-                    "      },\n" +
-                    "      \"logprobs\": null,\n" +
-                    "      \"finish_reason\": \"stop\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"usage\": {\n" +
-                    "    \"prompt_tokens\": 511,\n" +
-                    "    \"completion_tokens\": 168,\n" +
-                    "    \"total_tokens\": 679,\n" +
-                    "    \"prompt_tokens_details\": {\n" +
-                    "      \"cached_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0\n" +
-                    "    },\n" +
-                    "    \"completion_tokens_details\": {\n" +
-                    "      \"reasoning_tokens\": 0,\n" +
-                    "      \"audio_tokens\": 0,\n" +
-                    "      \"accepted_prediction_tokens\": 0,\n" +
-                    "      \"rejected_prediction_tokens\": 0\n" +
-                    "    }\n" +
-                    "  },\n" +
-                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-                    "}\n";
+            Map<String, Object> mockedDataMap = JsonToStringMapConverter.convertJsonToMap(mockdata);
+            String mockedDataOpenAi = interactionToJsonService.processUserJson(mockedDataMap);
 
-//            String mockedDataOpenAi2 = "{\n" +
-//                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
-//                    "  \"object\": \"chat.completion\",\n" +
-//                    "  \"created\": 1732618207,\n" +
-//                    "  \"model\": \"gpt-4o-2024-08-06\",\n" +
-//                    "  \"choices\": [\n" +
-//                    "    {\n" +
-//                    "      \"index\": 0,\n" +
-//                    "      \"message\": {\n" +
-//                    "        \"role\": \"assistant\",\n" +
-//                    "        \"content\": \"```json\\n{\\n  \\\"personalDetails\\\": {\\n    \\\"name\\\": \\\"Tal MoshelHa\\\",\\n    \\\"email\\\": \\\"talmosheli@gmail.com\\\",\\n    \\\"phone\\\": \\\"0522255654\\\",\\n    \\\"linkedIn\\\": \\\"https://www.linkedin.com/in/tal-moshel/\\\",\\n    \\\"gitHub\\\": \\\"https://github.com/TalMoshel1\\\",\\n    \\\"summary\\\": \\\"Experienced in JavaScript and React, aiming to become a Full Stack Developer.\\\"\\n  },\\n  \\\"jobs\\\": [\\n    {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }, {\\n      \\\"title\\\": \\\"Frontend Developer\\\",\\n      \\\"company\\\": \\\"XYZ Company\\\",\\n      \\\"period\\\": \\\"2022 - 2023\\\",\\n      \\\"responsibilities\\\": [\\\"1\\\", \\\"2\\\"]\\n    }\\n  ],\\n  \\\"educations\\\": [\\n     ],\\n  \\\"Skills\\\": [\\\"one skill\\\", \\\"second skill\\\", \\\"third skill\\\"],\\n  \\\"preferredCvTemplate\\\": \\\"1\\\",\\n  \\\"projects\\\": [\\n    {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"\\\", \\\"\\\", \\\"\\\", \\\"\\\"],\\n      \\\"body\\\": \\\"long string\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n , {\\n      \\\"role\\\": \\\"FrontEndBackEndDeveloper\\\",\\n      \\\"project\\\": \\\"PrivateBoxingLessonsApp\\\",\\n      \\\"technologies\\\": [\\\"\\\", \\\"\\\", \\\"\\\", \\\"\\\"],\\n      \\\"body\\\": \\\"\\\",\\n      \\\"urls\\\": {\\n        \\\"githubRepository\\\": [\\\"https://www.youtube.com/\\\", \\\"www.youtube.com\\\"],\\n        \\\"live\\\": \\\"www.google.com\\\"\\n      }\\n    }\\n ],\\n \\\"army\\\": {\\n \\\"period\\\": \\\"2020 - 2023\\\", \\n    \\\"body\\\": \\\"Golani fighter.\\\"\\n  }\\n}\\n```\",\n" +
-//                    "        \"refusal\": null\n" +
-//                    "      },\n" +
-//                    "      \"logprobs\": null,\n" +
-//                    "      \"finish_reason\": \"stop\"\n" +
-//                    "    }\n" +
-//                    "  ],\n" +
-//                    "  \"usage\": {\n" +
-//                    "    \"prompt_tokens\": 511,\n" +
-//                    "    \"completion_tokens\": 168,\n" +
-//                    "    \"total_tokens\": 679,\n" +
-//                    "    \"prompt_tokens_details\": {\n" +
-//                    "      \"cached_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0\n" +
-//                    "    },\n" +
-//                    "    \"completion_tokens_details\": {\n" +
-//                    "      \"reasoning_tokens\": 0,\n" +
-//                    "      \"audio_tokens\": 0,\n" +
-//                    "      \"accepted_prediction_tokens\": 0,\n" +
-//                    "      \"rejected_prediction_tokens\": 0\n" +
-//                    "    }\n" +
-//                    "  },\n" +
-//                    "  \"system_fingerprint\": \"fp_7f6be3efb0\"\n" +
-//                    "}\n";
+
 
 //            String mockedDataOpenAi2 = "{\n" +
 //                    "  \"id\": \"chatcmpl-AXnQtkKjhFuLy3WURy2rL1hcj6DXD\",\n" +
@@ -193,7 +125,7 @@ public class CVController {
 //                    "}\n";
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> responseMap = objectMapper.readValue(mockedDataOpenAi2, Map.class);
+            Map<String, Object> responseMap = objectMapper.readValue(mockedDataOpenAi, Map.class);
 
             if (responseMap.containsKey("choices") && !((List) responseMap.get("choices")).isEmpty()) {
                 Map<String, Object> firstChoice = (Map<String, Object>) ((List) responseMap.get("choices")).get(0);
@@ -215,22 +147,18 @@ public class CVController {
                 String preferredCvTemplate = (String) requestData.get("preferredCvTemplate");
 
 
-                System.out.println("preferredCvTemplate: " + preferredCvTemplate);
                 JSONObject jsonObject = new JSONObject(personalDetailsJson);
                 String nameProp = jsonObject.getString("name");
                 String newFileName = generateFileName(nameProp);
 
                 PersonalDetails personalDetails = gson.fromJson(personalDetailsJson, PersonalDetails.class);
 
-                // Deserialize jobs
                 String jobsJson = gson.toJson(requestData.get("jobs"));
                 List<Job> jobs = gson.fromJson(jobsJson, new TypeToken<List<Job>>() {
                 }.getType());
 
-                // Deserialize educations
                 String educationsJson = gson.toJson(requestData.get("educations"));
 
-                // Deserialize Skills
 
                 String SkillsJson = gson.toJson(requestData.get("Skills"));
 
@@ -259,17 +187,7 @@ public class CVController {
                 String skillsSection = htmlGenerator.generateSkillsSection(skills);
                 String projectsSection = htmlGenerator.generateProjectSection(projects);
 
-                // Add generated HTML sections and other data to the map
-                requestData.put("workSection", workSection);
-                requestData.put("educationSection", educationSection);
-                requestData.put("personalDetailsSection", personalDetails);
-                requestData.put("skillsSection", skillsSection);
-                requestData.put("projectsSection", projectsSection);
-                requestData.put("armySection", armySection);
-
-
-
-                String templateName = "cv"; // Template file name without extension
+                String templateName = "cv";
                 String htmlContent = templateService.compileTemplateWithSections(preferredCvTemplate, requestData, jobs, educations, personalDetails, skillsSection, projectsSection, armySection);
                 File htmlFile = new File(homeFolder + newFileName + ".html");
                 String outputPath = htmlFile.getAbsolutePath();
@@ -277,9 +195,6 @@ public class CVController {
                 Files.write(Paths.get(outputPath), htmlContent.getBytes());
 
                 File pdfFile = pdfService.generatePdf(newFileName);
-
-
-
 
                 if (!pdfFile.exists()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

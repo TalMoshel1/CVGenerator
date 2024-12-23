@@ -84,7 +84,6 @@ public class Job {
             });
             sb.append("</ul>");
         }
-        System.out.println("job sb: "+ sb.toString());
         return sb.toString();
     }
 

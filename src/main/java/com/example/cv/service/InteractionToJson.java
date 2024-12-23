@@ -28,7 +28,7 @@ public class InteractionToJson {
 
             String prompt = "You are a CV writer expert. Please take the information you got from the user: " +
                     userInputJson +
-                    ", and then translate it to the structure of this JSON object (apply the information instead of the values).Note: you might see github links both in projects and outside of project as github profile, differentiate between them. Note: add yourself information to the educations and jobs list until there are 3 of them in each list (the latest job need to be in the top and the oldest in the bottom) and add  more meat to the body of the project, but dont made up information for other peoperties in the JSON structure, and return the result of this long JSON structure with the new information: {\n" +
+                    ", and then translate it to the structure of this JSON object (apply the information instead of the values).Note: you might see github links both in projects and outside of project as github profile, differentiate between them. Note: add yourself information to the educations and jobs list until there are 3 of them in each list (the latest job need to be in the top and the oldest in the bottom), but dont made up information for other properties in the JSON structure, and return the result of this long JSON structure with the new information: {\n" +
                     "  \"personalDetails\": {\n" +
                     "    \"name\": \"\",\n" +
                     "    \"email\": \"\",\n" +
@@ -97,7 +97,6 @@ public class InteractionToJson {
                     "  }\n" +
                     "}";
 
-            // Create the OpenAI request
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -115,15 +114,12 @@ public class InteractionToJson {
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestPayload, headers);
 
-            // Send request to OpenAI API
             ResponseEntity<String> response = restTemplate.postForEntity(
                     OPENAI_URL,
                     entity,
                     String.class
             );
 
-            // Return the full OpenAI response body as-is
-            System.out.println("response: "+ response.getBody());
             return response.getBody();
 
         } catch (Exception e) {

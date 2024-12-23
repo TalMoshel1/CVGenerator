@@ -44,12 +44,7 @@ public class PdfService {
             tempPdf = new File("/root/projects/cvGenerator/src/main/resources/CVTemplates/cv.pdf");
         }
 
-//        if (indexHtmlTemp == null) {
-//            indexHtmlTemp = Paths.get("/root/projects/cvGenerator/src/main/resources/CVTemplates/cv.html");
-//        }
-
         String chromeCommandTemplate = "--no-sandbox --headless --disable-gpu --run-all-compositor-stages-before-draw --virtual-time-budget=30000 --print-to-pdf={{printToPdf}} {{indexHtml}} --no-pdf-header-footer --print-to-pdf-no-header";
-//        String chromePath = System.getenv("chromepath");
 
         return chromePath + " " + chromeCommandTemplate
                 .replace("{{printToPdf}}", tempPdf.getAbsolutePath())

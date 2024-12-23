@@ -94,7 +94,6 @@ public class PersonalDetails {
         sb.append("<li>Summary: ").append(getSummary()).append("</li>");
         sb.append("</ul>");
         sb.append("</section>");
-        System.out.println("too string of personal: "+ sb.toString());
         return sb.toString();
     }
 }
