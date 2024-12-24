@@ -6,7 +6,6 @@ public class UserDetailsRequest {
     private String filename;
     private Map<String, String> userDetails;
 
-    // Getters and setters
     public String getFilename() {
         return filename;
     }

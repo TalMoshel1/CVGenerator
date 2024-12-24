@@ -6,14 +6,13 @@ import java.util.stream.Collectors;
 
 public class Skills {
 
-    private List<String> skills; // Use List<String> for skills
+    private List<String> skills; 
 
     // Constructor (optional)
     public Skills() {
         this.skills = new ArrayList<>(); // Initialize empty list
     }
 
-    // Getters and setters for skills
     public List<String> getSkills() {
         return skills;
     }
@@ -22,7 +21,6 @@ public class Skills {
         this.skills = skills;
     }
 
-    // Add a method to add individual skills
     public void addSkill(String skill) {
         skills.add(skill);
     }

@@ -4,12 +4,10 @@ public class PreferredCvTemplate {
 
     private String templateName;
 
-    // Constructor (optional)
     public PreferredCvTemplate() {
         // Default constructor
     }
 
-    // Getter and setter for templateName
     public String getTemplateName() {
         return templateName;
     }

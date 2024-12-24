@@ -21,7 +21,6 @@ public class PersonalDetails {
 
     }
 
-    // Getters
     public String getName() {
         return name;
     }

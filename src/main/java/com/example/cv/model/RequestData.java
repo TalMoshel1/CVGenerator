@@ -49,10 +49,6 @@ public class RequestData {
     private List<String> skills;
     private String preferredCvTemplate;
 
-    // Getters and Setters for all fields
-    // (omitted for brevity)
-
-    // Optional: Constructor to initialize all fields
     public RequestData(PersonalDetails personalDetails, List<Job> jobs, List<Education> educations, List<String> skills, String preferredCvTemplate) {
         this.personalDetails = personalDetails;
         this.jobs = jobs;
