@@ -228,7 +228,7 @@ public class CVController {
 
         public static String getThisCurrentYear() {
         Calendar cal = Calendar.getInstance();
-        return String.valueOf(cal.get(Calendar.YEAR)); // Get current year
+        return String.valueOf(cal.get(Calendar.YEAR)); 
     }
 
     public static String generateFileName(String namesString) {
